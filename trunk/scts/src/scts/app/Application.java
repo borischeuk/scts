@@ -1,4 +1,4 @@
-package scts.exec;
+package scts.app;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
