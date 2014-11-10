@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 import scts.ui.ControlPanel;
+import scts.ui.LivePanel;
 import scts.ui.MonitorPanel;
 
 
@@ -18,6 +19,7 @@ public class Application {
 		
 		frame.add(new ControlPanel(), BorderLayout.NORTH);
 		frame.add(new MonitorPanel(), BorderLayout.EAST);
+		frame.add(new LivePanel(), BorderLayout.CENTER);
 		
 		frame.setVisible(true);
 	}

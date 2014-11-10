@@ -1,5 +1,6 @@
 package scts.ui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -19,6 +20,8 @@ public class MonitorPanel extends JPanel{
 		
 		this.add(configBtn);
 		this.add(quitBtn);
+		
+		this.setBackground(Color.BLACK);
 		
 	}
 
