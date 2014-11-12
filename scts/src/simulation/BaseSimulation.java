@@ -5,7 +5,7 @@ import java.util.Date;
 
 public abstract class BaseSimulation {
 
-	protected ArrayDeque<ScheduledEvent> sqs;
+	protected ArrayDeque<ScheduledEvent> scheduleQueue;
 	
 	protected Date startTime;
 	protected int currentTime;

@@ -5,14 +5,14 @@ import java.util.ArrayDeque;
 public class Simulation extends BaseSimulation{
 
 	public Simulation() {
-		sqs = new ArrayDeque<ScheduledEvent>();
+		scheduleQueue = new ArrayDeque<ScheduledEvent>();
 		currentTime = 0;
 		stop = false;
 	}
 	
 	@Override
 	public void schedule(ScheduledEvent newEvent) {
-		sqs.add(newEvent);
+		scheduleQueue.add(newEvent);
 	}
 
 	@Override
@@ -20,8 +20,8 @@ public class Simulation extends BaseSimulation{
 		
 		ScheduledEvent currentEvent;
 		
-		while(!sqs.isEmpty() && !this.stop) {
-			currentEvent = sqs.poll();
+		while(!scheduleQueue.isEmpty() && !this.stop) {
+			currentEvent = scheduleQueue.poll();
 			currentEvent.getEvent().execute(this);
 		}
 		

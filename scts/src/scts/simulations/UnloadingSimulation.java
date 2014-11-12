@@ -1,5 +1,10 @@
 package scts.simulations;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+import scts.domain.Ship;
+import scts.events.ShipGeneration;
 import scts.events.StopEvent;
 import scts.events.TestEvent;
 import simulation.ScheduledEvent;
@@ -7,21 +12,22 @@ import simulation.Simulation;
 
 public class UnloadingSimulation extends Simulation{
 	
+	private Queue<Ship> shipQueue;
+	
 	public UnloadingSimulation() {
 		super();
+		shipQueue = new PriorityQueue<Ship>();
 		
-		for (int i = 0; i < 50; i++) {
-			ScheduledEvent testEvent = new ScheduledEvent(new TestEvent(i), 20);
-			this.schedule(testEvent);
-		}
+		this.schedule( new ScheduledEvent(new ShipGeneration(), 0) );
 		
-		this.schedule( new ScheduledEvent(new StopEvent(this), 100000) );
-		
-		for (int i = 50; i < 100; i++) {
-			ScheduledEvent testEvent = new ScheduledEvent(new TestEvent(i), 20);
-			this.schedule(testEvent);
-		}
-		
+	}
+	
+	public PriorityQueue getShipQueue() {
+		return (PriorityQueue)this.shipQueue;
+	}
+	
+	public void setShipQueue(PriorityQueue shipQueue) {
+		this.shipQueue = shipQueue;
 	}
 	
 }
