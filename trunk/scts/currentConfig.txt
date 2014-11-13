@@ -1,4 +1,4 @@
-dockMinTime=15
+dockMinTime=10
 dockMaxTime=20
 undockMinTime=10
 undockMaxTime=20
@@ -12,8 +12,8 @@ yvDropMinTime=1
 yvDropMaxTime=2
 yvTravelToSeaSideMinTime=5
 yvTravelToSeaSideMaxTime=10
-yvTravelQAMinTime=3
-yvTravelQAMaxTime=5
+yvTravelToQAMinTime=3
+yvTravelToQAMaxTime=5
 minContainers=8000
 maxContainers=18000
 maxStackSize=2000

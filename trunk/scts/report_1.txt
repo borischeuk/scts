@@ -1,0 +1,21 @@
+Operational Statistics
+Total Number of Ships Unloaded: 0
+Average Number of Ships Unloaded: 0
+Total Number of Containers Transferred: 0
+Average Number of Containers Transferred: 0
+Service Time from Arrival to Departure (Non-priority Ships)
+Maximum: 0.0
+Minimum: 0.0
+Average: 0.0
+Service Time from Arrival to Departure (Priority Ships)
+Maximum: 0.0
+Minimum: 0.0
+Average: 0.0
+Longest Service Time Experienced by a Ship: 0.0
+Largest Number of Ships Waiting for Unloading: 0
+Maximum Length of Road Vehicle Queue: 0
+Stack Size
+Maximum: 0
+Minimum: 0
+Average: 0
+Percentage of Time Spent by Yard Vehicles: 0.0

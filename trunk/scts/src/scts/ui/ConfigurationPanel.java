@@ -18,6 +18,7 @@ import scts.domain.*;
 public class ConfigurationPanel{
 	
 	private JLabel title;
+	private JButton defaultBtn;
 	private JButton startBtn;
 	private JLabel dockTime;
 	private JLabel undockTime;
@@ -60,9 +61,10 @@ public class ConfigurationPanel{
 	private JTextField numShipsWaiting;
 	private ConfigValues data;
 	private Configuration configuration;
+	private JFrame frame;
 	
 	public ConfigurationPanel() {
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setSize(600, 600);
 		frame.setTitle("SCTS Configuration");
@@ -164,8 +166,9 @@ public class ConfigurationPanel{
 		JPanel timeLimitPanel = addLabelTextField(timeLimitLabel, timeLimit);
 		display.add(timeLimitPanel);
 		
-		
-		startBtn = new JButton("Start");
+		defaultBtn = new JButton("Default");
+		menu.add(defaultBtn);
+		startBtn = new JButton("OK");
 		menu.add(startBtn);
 		
 		frame.add(display, BorderLayout.CENTER);
@@ -175,6 +178,11 @@ public class ConfigurationPanel{
 		// SetValues
 		configuration = new Configuration();
 		data = configuration.getData();
+		setValues(data);
+		setListeners();
+	}
+	
+	private void setValues(ConfigValues data) {
 		dockMinTime.setText(Integer.toString(data.getDockMinTime()));
 		dockMaxTime.setText(Integer.toString(data.getDockMaxTime()));
 		undockMinTime.setText(Integer.toString(data.getUndockMinTime()));
@@ -199,11 +207,20 @@ public class ConfigurationPanel{
 		numYV.setText(Integer.toString(data.getNumYV()));
 		timeLimit.setText(Integer.toString(data.getTimeLimit()));
 		numShipsWaiting.setText(Integer.toString(data.getNumShipsWaiting()));
-		setListeners();
+		
 	}
-	
+
 	private void setListeners() {
-				
+		
+		defaultBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				configuration.readValues("\\default.txt");
+				data = configuration.getData();
+				setValues(data);
+			}
+		});
+		
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -234,6 +251,7 @@ public class ConfigurationPanel{
 					data.setConfigValues("numShipsWaiting", Integer.parseInt(numShipsWaiting.getText()));
 					
 					configuration.setData(data);
+					frame.dispose();
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}

@@ -11,19 +11,19 @@ import scts.domain.ConfigValues;
 public class Configuration {
 	
 	private String default_file_name = "\\default.txt";
+	private String currentFileName = "\\currentConfig.txt";
 	private String outputFile = "currentConfig.txt";
 	private ConfigValues configValues;
 	
 	public Configuration() {
 		configValues = new ConfigValues();
-		//configValues.setConfigValues("dockMinTime", 10);
-		readDefaultValues();
+		//readValues(currentFileName);
 	}
 	
-	public void readDefaultValues() {
+	public void readValues(String fileName) {
 		try {
 			String filePath = new File("").getAbsolutePath();
-			filePath = filePath.concat(default_file_name);
+			filePath = filePath.concat(fileName);
 			FileReader fr = new FileReader(filePath);
 			BufferedReader textReader = new BufferedReader(fr);
 			String line = textReader.readLine();
@@ -68,8 +68,8 @@ public class Configuration {
 			writer.write("yvDropMaxTime=" + data.getyvDropMaxTime() + "\n");
 			writer.write("yvTravelToSeaSideMinTime=" + data.getyvTravelToSeaSideMinTime() + "\n");
 			writer.write("yvTravelToSeaSideMaxTime=" + data.getyvTravelToSeaSideMaxTime() + "\n");
-			writer.write("yvTravelQAMinTime=" + data.getyvTravelToQAMinTime() + "\n");
-			writer.write("yvTravelQAMaxTime=" + data.getyvTravelToQAMaxTime() + "\n");
+			writer.write("yvTravelToQAMinTime=" + data.getyvTravelToQAMinTime() + "\n");
+			writer.write("yvTravelToQAMaxTime=" + data.getyvTravelToQAMaxTime() + "\n");
 			writer.write("minContainers=" + data.getMinContainers() + "\n");
 			writer.write("maxContainers=" + data.getMaxContainers() + "\n");
 			writer.write("maxStackSize=" + data.getMaxStackSize() + "\n");
@@ -84,5 +84,12 @@ public class Configuration {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public void reset() {
+		this.readValues(default_file_name);
+		configValues = this.getData();
+		this.setData(configValues);
+		
 	}
 }
