@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import scts.domain.ConfigValues;
 import scts.simulations.UnloadingSimulation;
 import scts.ui.ControlPanel;
 import scts.ui.LivePanel;
@@ -27,6 +28,13 @@ public class Application {
 		//frame.add(new LivePanel(), BorderLayout.CENTER);
 		
 		frame.setVisible(true);
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			public void run() {
+				Configuration configuration = new Configuration();
+				configuration.reset();
+			}
+		}));
 	}
 
 }

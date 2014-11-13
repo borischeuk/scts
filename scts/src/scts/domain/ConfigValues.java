@@ -1,5 +1,12 @@
 package scts.domain;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import scts.app.Configuration;
+
 public class ConfigValues {
 	/*
 	 * Time for ship to dock or undock containers : 10 - 20 mins;
@@ -42,6 +49,7 @@ Num of ships already waiting: 2 without priority
 	private int numYV;
 	private int timeLimit;
 	private int numShipsWaiting;
+	private String inputFileName = "\\currentConfig.txt";
 	
 	public enum Var {
 		dockMinTime,
@@ -68,6 +76,29 @@ Num of ships already waiting: 2 without priority
 		numYV,
 		timeLimit,
 		numShipsWaiting
+	}
+	
+	public ConfigValues() {
+		try {
+			String filePath = new File("").getAbsolutePath();
+			filePath = filePath.concat(inputFileName);
+			FileReader fr = new FileReader(filePath);
+			BufferedReader textReader = new BufferedReader(fr);
+			String line = textReader.readLine();
+			while (line != null) {
+				//System.out.println("Line ====================== " + line);
+				int flag = line.indexOf("=");
+				String tempVar = line.substring(0,flag);
+				//System.out.println("tempVar ================== " + tempVar);
+				String tempValue = line.substring(flag+1, line.length());
+				//System.out.println("tempValue ========================== " + tempValue);
+				this.setConfigValues(tempVar, Integer.parseInt(tempValue));
+				line = textReader.readLine();
+			}
+			textReader.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public void setConfigValues(String name, int value) {
