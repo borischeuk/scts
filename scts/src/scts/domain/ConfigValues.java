@@ -43,6 +43,112 @@ Num of ships already waiting: 2 without priority
 	private int timeLimit;
 	private int numShipsWaiting;
 	
+	public enum Var {
+		dockMinTime,
+		dockMaxTime,
+		undockMinTime,
+		undockMaxTime,
+		qcRemoveMinTime,
+		qcRemoveMaxTime,
+		qcPlaceMinTime,
+		qcPlaceMaxTime,
+		yvPickMinTime,
+		yvPickMaxTime,
+		yvDropMinTime,
+		yvDropMaxTime,
+		yvTravelToSeaSideMinTime,
+		yvTravelToSeaSideMaxTime,
+		yvTravelToQAMinTime,
+		yvTravelToQAMaxTime,
+		minContainers,
+		maxContainers,
+		maxStackSize,
+		initialStackSize,
+		numQC,
+		numYV,
+		timeLimit,
+		numShipsWaiting
+	}
+	
+	public void setConfigValues(String name, int value) {
+		switch (Var.valueOf(name)) {
+		case dockMinTime:
+			this.dockMinTime = value;
+			break;
+		case dockMaxTime:
+			this.dockMaxTime = value;
+			break;
+		case undockMinTime:
+			this.undockMinTime = value;
+			break;
+		case undockMaxTime:
+			this.undockMaxTime = value;
+			break;
+		case qcRemoveMinTime:
+			this.qcRemoveMinTime = value;
+			break;
+		case qcRemoveMaxTime:
+			this.qcRemoveMaxTime = value;
+			break;
+		case qcPlaceMinTime:
+			this.qcPlaceMinTime = value;
+			break;
+		case qcPlaceMaxTime:
+			this.qcPlaceMaxTime = value;
+			break;
+		case yvPickMinTime:
+			this.yvPickMinTime = value;
+			break;
+		case yvPickMaxTime:
+			this.yvPickMaxTime = value;
+			break;
+		case yvDropMinTime:
+			this.yvDropMinTime = value;
+			break;
+		case yvDropMaxTime:
+			this.yvDropMaxTime = value;
+			break;
+		case yvTravelToSeaSideMinTime:
+			this.yvTravelToSeaSideMinTime = value;
+			break;
+		case yvTravelToSeaSideMaxTime:
+			this.yvTravelToSeaSideMaxTime = value;
+			break;
+		case yvTravelToQAMinTime:
+			this.yvTravelToQAMinTime = value;
+			break;
+		case yvTravelToQAMaxTime:
+			this.yvTravelToQAMaxTime = value;
+			break;
+		case minContainers:
+			this.minContainers = value;
+			break;
+		case maxContainers:
+			this.maxContainers = value;
+			break;
+		case maxStackSize:
+			this.maxStackSize = value;
+			break;
+		case initialStackSize:
+			this.initialStackSize = value;
+			break;
+		case numQC:
+			this.numQC = value;
+			break;
+		case numYV:
+			this.numYV = value;
+			break;
+		case timeLimit:
+			this.timeLimit = value;
+			break;
+		case numShipsWaiting:
+			this.numShipsWaiting = value;
+			break;
+		default:
+			break;
+		}
+	}
+	
 	// Set Values
 	public void setDockMinTime(int dockMinTime) {
 		this.dockMinTime = dockMinTime;
