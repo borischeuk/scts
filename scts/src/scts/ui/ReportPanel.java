@@ -1,12 +1,16 @@
 package scts.ui;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import scts.app.ReportGeneration;
 import scts.domain.Stats;
 
 public class ReportPanel{
@@ -32,16 +36,16 @@ public class ReportPanel{
 	private JLabel minStackSize;
 	private JLabel avgStackSize;
 	private JLabel yardVehiclePercentageTimeSpent;
+	private JButton saveBtn;
+	private Stats data;
 	
 	public ReportPanel(Stats stats) {
-		stats = new Stats();
+		data = stats;
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setSize(600, 600);
 		frame.setTitle("SCTS Report");
 		frame.setLayout(new FlowLayout());
-		
-		
 		
 		JPanel panel = new JPanel();
 		BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
@@ -76,7 +80,7 @@ public class ReportPanel{
 //		maxNPShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(maxNPShipServiceTime);
 
-		minNPShipServiceTime = new JLabel("Mininum: " + stats.getNPMinServiceTime());
+		minNPShipServiceTime = new JLabel("Minimum: " + stats.getNPMinServiceTime());
 //		minNPShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(minNPShipServiceTime);
 		
@@ -92,7 +96,7 @@ public class ReportPanel{
 //		maxPShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(maxPShipServiceTime);
 
-		minPShipServiceTime = new JLabel("Mininum: " + stats.getPMinServiceTime());
+		minPShipServiceTime = new JLabel("Minimum: " + stats.getPMinServiceTime());
 //		minPShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(minPShipServiceTime);
 		
@@ -100,7 +104,7 @@ public class ReportPanel{
 //		avgPShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(avgPShipServiceTime);
 		
-		longestShipServiceTime = new JLabel("Largest Number of Ships Waiting for Unloading: " + stats.getLongestServiceTime());
+		longestShipServiceTime = new JLabel("Longest Service Time Experienced by a Ship: " + stats.getLongestServiceTime());
 //		longestShipServiceTime.setPreferredSize(new Dimension(380, 20));
 		panel.add(longestShipServiceTime);
 		
@@ -120,7 +124,7 @@ public class ReportPanel{
 //		maxStackSize.setPreferredSize(new Dimension(380, 20));
 		panel.add(maxStackSize);
 
-		minStackSize = new JLabel("Mininum: " + stats.getMinStackSize());
+		minStackSize = new JLabel("Minimum: " + stats.getMinStackSize());
 //		minStackSize.setPreferredSize(new Dimension(380, 20));
 		panel.add(minStackSize);
 		
@@ -131,6 +135,23 @@ public class ReportPanel{
 		yardVehiclePercentageTimeSpent = new JLabel("Percentage of Time Spent by Yard Vehicles: " + stats.getYardVehiclePercentageTimeSpent());
 //		yardVehiclePercentageTimeSpent.setPreferredSize(new Dimension(380, 20));
 		panel.add(yardVehiclePercentageTimeSpent);
+		
+		saveBtn = new JButton("Save as Text File");
+		panel.add(saveBtn);
+		
+		setListeners();
+		
 		frame.setVisible(true);
+	}
+	
+	private void setListeners() {
+		saveBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				ReportGeneration rg = new ReportGeneration();
+				rg.generateFile(data);
+			}
+		});
+		
 	}
 }

@@ -1,4 +1,4 @@
-dockMinTime=10
+dockMinTime=15
 dockMaxTime=20
 undockMinTime=10
 undockMaxTime=20
