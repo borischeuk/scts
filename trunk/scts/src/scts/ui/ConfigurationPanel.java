@@ -1,11 +1,11 @@
 package scts.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,36 +13,71 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import scts.app.*;
+import scts.domain.*;
 
 public class ConfigurationPanel{
 	
 	private JLabel title;
-	private JButton defaultBtn;
 	private JButton startBtn;
 	private JLabel dockTime;
 	private JLabel undockTime;
+	private JLabel qcRemoveTime;
+	private JLabel qcPlaceTime;
+	private JLabel yvPickTime;
+	private JLabel yvDropTime;
+	private JLabel yvTravelToSeaSideTime;
+	private JLabel yvTravelToQATime;
+	private JLabel containers;
+	private JLabel stackSize;
+	private JLabel initialStackSizeLabel;
+	private JLabel numQCLabel;
+	private JLabel numYVLabel;
+	private JLabel timeLimitLabel;
+	private JLabel numShipsWaitingLabel;
 	private JTextField dockMinTime;
 	private JTextField dockMaxTime;
 	private JTextField undockMinTime;
 	private JTextField undockMaxTime;
+	private JTextField qcRemoveMinTime;
+	private JTextField qcRemoveMaxTime;
+	private JTextField qcPlaceMinTime;
+	private JTextField qcPlaceMaxTime;
+	private JTextField yvPickMinTime;
+	private JTextField yvPickMaxTime;
+	private JTextField yvDropMinTime;
+	private JTextField yvDropMaxTime;
+	private JTextField yvTravelToSeaSideMinTime;
+	private JTextField yvTravelToSeaSideMaxTime;
+	private JTextField yvTravelToQAMinTime;
+	private JTextField yvTravelToQAMaxTime;
+	private JTextField minContainers;
+	private JTextField maxContainers;
+	private JTextField maxStackSize;
+	private JTextField initialStackSize;
+	private JTextField numQC;
+	private JTextField numYV;
+	private JTextField timeLimit;
+	private JTextField numShipsWaiting;
+	private ConfigValues data;
 	private Configuration configuration;
 	
 	public ConfigurationPanel() {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		frame.setSize(400, 400);
+		frame.setSize(600, 600);
 		frame.setTitle("SCTS Configuration");
 		frame.setLayout(new BorderLayout());
 		
 		// Separate Frame
 		JPanel display = new JPanel();
-		display.setLayout(new FlowLayout());
+		//display.setLayout(new FlowLayout());
+		BoxLayout layout = new BoxLayout(display, BoxLayout.Y_AXIS);
+		display.setLayout(layout);
 		JPanel menu = new JPanel();
 		menu.setLayout(new FlowLayout());
 		
 		// Panel "display"
-		title = new JLabel("Simulation Settings", JLabel.CENTER);
-		title.setPreferredSize(new Dimension(380, 20));
+		title = new JLabel("Simulation Settings");
 		display.add(title);
 		
 		dockTime = new JLabel("Durations for ship to dock (mins): ");
@@ -57,33 +92,151 @@ public class ConfigurationPanel{
 		JPanel undockTimePanel = addLabelTextField(undockTime, undockMinTime, undockMaxTime);
 		display.add(undockTimePanel);
 		
-		defaultBtn = new JButton("Default Settings");
-		menu.add(defaultBtn);
+		qcRemoveTime = new JLabel("Durations for Quay Crane to remove a container from a ship (mins): ");
+		qcRemoveMinTime = new JTextField(5);
+		qcRemoveMaxTime = new JTextField(5);
+		JPanel qcRemoveTimePanel = addLabelTextField(qcRemoveTime, qcRemoveMinTime, qcRemoveMaxTime);
+		display.add(qcRemoveTimePanel);
+		
+		qcPlaceTime = new JLabel("Durations for Quay Crane to place a container in the Quay Area (mins): ");
+		qcPlaceMinTime = new JTextField(5);
+		qcPlaceMaxTime = new JTextField(5);
+		JPanel qcPlaceTimePanel = addLabelTextField(qcPlaceTime, qcPlaceMinTime, qcPlaceMaxTime);
+		display.add(qcPlaceTimePanel);
+		
+		yvPickTime = new JLabel("Durations for Yard Vehicle to pick up a container (mins): ");
+		yvPickMinTime = new JTextField(5);
+		yvPickMaxTime = new JTextField(5);
+		JPanel yvPickTimePanel = addLabelTextField(yvPickTime, yvPickMinTime, yvPickMaxTime);
+		display.add(yvPickTimePanel);
+		
+		yvDropTime = new JLabel("Durations for Yard Vehicle to drop a container (mins): ");
+		yvDropMinTime = new JTextField(5);
+		yvDropMaxTime = new JTextField(5);
+		JPanel yvDropTimePanel = addLabelTextField(yvDropTime, yvDropMinTime, yvDropMaxTime);
+		display.add(yvDropTimePanel);
+		
+		yvTravelToSeaSideTime = new JLabel("Durations for Yard Vehicle to travel to the sea-side transfer point (mins): ");
+		yvTravelToSeaSideMinTime = new JTextField(5);
+		yvTravelToSeaSideMaxTime = new JTextField(5);
+		JPanel yvTravelToSeaSideTimePanel = addLabelTextField(yvTravelToSeaSideTime, yvTravelToSeaSideMinTime, yvTravelToSeaSideMaxTime);
+		display.add(yvTravelToSeaSideTimePanel);
+		
+		yvTravelToQATime = new JLabel("Durations for Yard Vehicle to travel to the Quay Area queue (mins): ");
+		yvTravelToQAMinTime = new JTextField(5);
+		yvTravelToQAMaxTime = new JTextField(5);
+		JPanel yvTravelToQATimePanel = addLabelTextField(yvTravelToQATime, yvTravelToQAMinTime, yvTravelToQAMaxTime);
+		display.add(yvTravelToQATimePanel);
+		
+		containers = new JLabel("Number of containers (TEU): ");
+		minContainers = new JTextField(5);
+		maxContainers = new JTextField(5);
+		JPanel containersPanel = addLabelTextField(containers, minContainers, maxContainers);
+		display.add(containersPanel);
+		
+		stackSize = new JLabel("Maximum allowable size of stack (TEU): ");
+		maxStackSize = new JTextField(5);
+		JPanel stackSizePanel = addLabelTextField(stackSize, maxStackSize);
+		display.add(stackSizePanel);
+		
+		initialStackSizeLabel = new JLabel("Initial Stack Size (TEU): ");
+		initialStackSize = new JTextField(5);
+		JPanel initialStackSizePanel = addLabelTextField(initialStackSizeLabel, initialStackSize);
+		display.add(initialStackSizePanel);
+		
+		numQCLabel = new JLabel("Number of Quay Cranes: ");
+		numQC = new JTextField(5);
+		JPanel numQCPanel = addLabelTextField(numQCLabel, numQC);
+		display.add(numQCPanel);
+		
+		numYVLabel = new JLabel("Number of Yard Vehicles: ");
+		numYV = new JTextField(5);
+		JPanel numYVPanel = addLabelTextField(numYVLabel, numYV);
+		display.add(numYVPanel);
+		
+		numShipsWaitingLabel = new JLabel("Initial number of Ships already waiting to be unloaded: ");
+		numShipsWaiting = new JTextField(5);
+		JPanel numShipsWaitingPanel = addLabelTextField(numShipsWaitingLabel, numShipsWaiting);
+		display.add(numShipsWaitingPanel);
+		
+		timeLimitLabel = new JLabel("Simulated time limit for a run (days): ");
+		timeLimit = new JTextField(5);
+		JPanel timeLimitPanel = addLabelTextField(timeLimitLabel, timeLimit);
+		display.add(timeLimitPanel);
+		
+		
 		startBtn = new JButton("Start");
 		menu.add(startBtn);
 		
 		frame.add(display, BorderLayout.CENTER);
 		frame.add(menu, BorderLayout.SOUTH);
 		frame.setVisible(true);
-		
+
+		// SetValues
 		configuration = new Configuration();
+		data = configuration.getData();
+		dockMinTime.setText(Integer.toString(data.getDockMinTime()));
+		dockMaxTime.setText(Integer.toString(data.getDockMaxTime()));
+		undockMinTime.setText(Integer.toString(data.getUndockMinTime()));
+		undockMaxTime.setText(Integer.toString(data.getUndockMaxTime()));
+		qcRemoveMinTime.setText(Integer.toString(data.getqcRemoveMinTime()));
+		qcRemoveMaxTime.setText(Integer.toString(data.getqcRemoveMaxTime()));
+		qcPlaceMinTime.setText(Integer.toString(data.getqcPlaceMinTime()));
+		qcPlaceMaxTime.setText(Integer.toString(data.getqcPlaceMaxTime()));
+		yvPickMinTime.setText(Integer.toString(data.getyvPickMinTime()));
+		yvPickMaxTime.setText(Integer.toString(data.getyvPickMaxTime()));
+		yvDropMinTime.setText(Integer.toString(data.getyvDropMinTime()));
+		yvDropMaxTime.setText(Integer.toString(data.getyvDropMaxTime()));
+		yvTravelToSeaSideMinTime.setText(Integer.toString(data.getyvTravelToSeaSideMinTime()));
+		yvTravelToSeaSideMaxTime.setText(Integer.toString(data.getyvTravelToSeaSideMaxTime()));
+		yvTravelToQAMinTime.setText(Integer.toString(data.getyvTravelToQAMinTime()));
+		yvTravelToQAMaxTime.setText(Integer.toString(data.getyvTravelToQAMaxTime()));
+		minContainers.setText(Integer.toString(data.getMinContainers()));
+		maxContainers.setText(Integer.toString(data.getMaxContainers()));
+		maxStackSize.setText(Integer.toString(data.getMaxStackSize()));
+		initialStackSize.setText(Integer.toString(data.getInitialStackSize()));
+		numQC.setText(Integer.toString(data.getNumQC()));
+		numYV.setText(Integer.toString(data.getNumYV()));
+		timeLimit.setText(Integer.toString(data.getTimeLimit()));
+		numShipsWaiting.setText(Integer.toString(data.getNumShipsWaiting()));
 		setListeners();
 	}
 	
 	private void setListeners() {
-		
-		defaultBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//dockMaxTime.setText("20");
-			}
-		});
-		
+				
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String[] data = null;
-				configuration = new Configuration(data);
+				try {
+					data.setConfigValues("dockMinTime", Integer.parseInt(dockMinTime.getText()));
+					data.setConfigValues("dockMaxTime", Integer.parseInt(dockMaxTime.getText()));
+					data.setConfigValues("undockMinTime", Integer.parseInt(undockMinTime.getText()));
+					data.setConfigValues("undockMaxTime", Integer.parseInt(undockMaxTime.getText()));
+					data.setConfigValues("qcRemoveMinTime", Integer.parseInt(qcRemoveMinTime.getText()));
+					data.setConfigValues("qcRemoveMaxTime", Integer.parseInt(qcRemoveMaxTime.getText()));
+					data.setConfigValues("qcPlaceMinTime", Integer.parseInt(qcPlaceMinTime.getText()));
+					data.setConfigValues("qcPlaceMaxTime", Integer.parseInt(qcPlaceMaxTime.getText()));
+					data.setConfigValues("yvPickMinTime", Integer.parseInt(yvPickMinTime.getText()));
+					data.setConfigValues("yvPickMaxTime", Integer.parseInt(yvPickMaxTime.getText()));
+					data.setConfigValues("yvDropMinTime", Integer.parseInt(yvDropMinTime.getText()));
+					data.setConfigValues("yvDropMaxTime", Integer.parseInt(yvDropMaxTime.getText()));
+					data.setConfigValues("yvTravelToSeaSideMinTime", Integer.parseInt(yvTravelToSeaSideMinTime.getText()));
+					data.setConfigValues("yvTravelToSeaSideMaxTime", Integer.parseInt(yvTravelToSeaSideMaxTime.getText()));
+					data.setConfigValues("yvTravelToQAMinTime", Integer.parseInt(yvTravelToQAMinTime.getText()));
+					data.setConfigValues("yvTravelToQAMaxTime", Integer.parseInt(yvTravelToQAMaxTime.getText()));
+					data.setConfigValues("maxContainers", Integer.parseInt(maxContainers.getText()));
+					data.setConfigValues("minContainers", Integer.parseInt(minContainers.getText()));
+					data.setConfigValues("maxStackSize", Integer.parseInt(maxStackSize.getText()));
+					data.setConfigValues("initialStackSize", Integer.parseInt(initialStackSize.getText()));
+					data.setConfigValues("numQC", Integer.parseInt(numQC.getText()));
+					data.setConfigValues("numYV", Integer.parseInt(numYV.getText()));
+					data.setConfigValues("timeLimit", Integer.parseInt(timeLimit.getText()));
+					data.setConfigValues("numShipsWaiting", Integer.parseInt(numShipsWaiting.getText()));
+					
+					configuration.setData(data);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 			}
 		});
 		
@@ -97,6 +250,14 @@ public class ConfigurationPanel{
 		JLabel connector = new JLabel("-");
 		panel.add(connector);
 		panel.add(textfieldMax);
+		return panel;
+	}
+	
+	private JPanel addLabelTextField(JLabel label, JTextField textfield) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+		panel.add(label);
+		panel.add(textfield);
 		return panel;
 	}
 }
