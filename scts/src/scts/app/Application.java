@@ -19,13 +19,13 @@ public class Application {
 		
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 500);
+		frame.setSize(1000, 700);
 		frame.setTitle("SCTS");
 		frame.setLayout(new BorderLayout());
 		
 		frame.add(new ControlPanel(unloadingSimulation), BorderLayout.NORTH);
 		frame.add(new MonitorPanel(), BorderLayout.EAST);
-		//frame.add(new LivePanel(), BorderLayout.CENTER);
+		frame.add(new LivePanel(), BorderLayout.CENTER);
 		
 		frame.setVisible(true);
 		
