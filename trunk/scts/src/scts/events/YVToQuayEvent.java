@@ -18,7 +18,7 @@ public class YVToQuayEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("======================== Going to quay =========================");
+		//System.out.println("======================== Going to quay =========================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		

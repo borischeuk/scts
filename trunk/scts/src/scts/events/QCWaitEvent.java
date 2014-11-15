@@ -20,7 +20,7 @@ public class QCWaitEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Waiting ================");
+		//System.out.println("================= Waiting ================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		

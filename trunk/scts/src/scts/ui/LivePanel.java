@@ -29,6 +29,7 @@ import simulation.simulation.Simulation;
 public class LivePanel extends JPanel {
 	
 	LivePanel instance;
+	Thread thread;
 	
 	private Simulation simulation;
 	private SimulationState state;
@@ -49,6 +50,24 @@ public class LivePanel extends JPanel {
 	
 	public LivePanel(Simulation simulation) {
 		//super();
+		
+		if(instance == null)
+			instance = this;
+		
+		thread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						thread.sleep(100);
+					} catch (InterruptedException e) {
+					}
+					update();
+				}
+			}
+			
+		});
 		
 		this.simulation = simulation;
 		this.state = ((UnloadingSimulation)simulation).getState();
@@ -100,6 +119,7 @@ public class LivePanel extends JPanel {
 		b1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				ship.move();
 				yardVehicle.moveRight();
 				repaint();
 			}
@@ -107,19 +127,32 @@ public class LivePanel extends JPanel {
 		
 	}
 	
+	public LivePanel getInstance() {
+		return instance;
+	}
+	
 	//Get information of the simulation and update the ui
 	public void update() {
 		//The ship in the berth
-		Ship shipInBerth = state.getShipQueue().peek();
+		Ship shipInBerth = new Ship();
+		if(!state.getShipQueue().isEmpty())
+			shipInBerth = state.getShipQueue().peek();
 		//The crane used in this simulation
-		Crane crane = state.getQCArray().get(0);
+		Crane crane;
+		if(!state.getQCArray().isEmpty())
+			crane = state.getQCArray().get(0);
 		//The vehicle in different positions
-		YardVehicle laneVehicle = state.getVehicleAtLane();
+		/*YardVehicle laneVehicle = state.getVehicleAtLane();
 		YardVehicle tPtVehicle = state.getVehicleAtTPt();
 		YardVehicle vehicleToStack = state.getVehicleToStackQueue().get(0);
-		YardVehicle vehicleToQuay = state.getVehicleToQuayQueue().get(0);
+		YardVehicle vehicleToQuay = state.getVehicleToQuayQueue().get(0);*/
 		//The stack used in this simulation
-		ContainerStack containerStack = state.getStackArray().get(0);
+		
+		ContainerStack containerStack;
+		if(!state.getStackArray().isEmpty())
+			containerStack = state.getStackArray().get(0);
+		
+		ship.move();
 		
 		Point shipInitPos = new Point(10, 10);
 		Point shipDockPos = new Point((this.getSize().width/4), 10);
@@ -128,6 +161,7 @@ public class LivePanel extends JPanel {
 		Point shipLastPos = new Point((this.getSize().width), 10);
 		
 		if(shipInBerth.getStatus() == Ship.DOCKING) {
+			System.out.println("==============Test===========");
 			Point newPos = new Point();
 			if(ship.getLocation().equals(shipInitPos)) newPos = shipDockPos;
 			if(ship.getLocation().equals(shipDockPos)) newPos = shipWaitPos;
@@ -150,6 +184,10 @@ public class LivePanel extends JPanel {
 		Point vehicleLastPos = new Point((this.getSize().width), 10);
 		
 		repaint();
+		
 	}
 	
+	public void threadUpdate() {
+		thread.start();
+	}
 }

@@ -34,7 +34,7 @@ public class ShipGeneration extends ScheduledEvent{
 		
 		unloadingSimulation.getState().setShipQueue(shipQueue);
 		
-		System.out.println("Total Number of Ship Generated ================= " + unloadingSimulation.getState().getShipQueue().size());
+		//System.out.println("Total Number of Ship Generated ================= " + unloadingSimulation.getState().getShipQueue().size());
 		
 		//simulation.schedule( new DockingEvent( ( (UnloadingSimulation)simulation).getState().getShipQueue().peek(), 10) );
 	}

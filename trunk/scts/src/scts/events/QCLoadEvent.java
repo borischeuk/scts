@@ -22,7 +22,7 @@ public class QCLoadEvent extends ScheduledEvent {
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("====================== Unloading ======================");
+		//System.out.println("====================== Unloading ======================");
 		
 		if(this.getStartTime() == null)
 			this.initialize();

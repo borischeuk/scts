@@ -18,7 +18,7 @@ public class ShipUndockEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================ Undocking ================");
+		//System.out.println("================ Undocking ================");
 		
 		if(this.getStartTime() == null)
 			this.initialize();
