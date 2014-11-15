@@ -27,7 +27,8 @@ public class ShipUndockEvent extends ScheduledEvent{
 		
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			((UnloadingSimulation)simulation).getState().getShipQueue().poll();
 		}

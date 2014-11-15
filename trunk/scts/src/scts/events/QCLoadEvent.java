@@ -8,12 +8,12 @@ import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
-public class QCUnloadEvent extends ScheduledEvent {
+public class QCLoadEvent extends ScheduledEvent {
 
 	private Ship ship;
 	private Crane crane;
 	
-	public QCUnloadEvent(Ship ship, Crane crane, int duration) {
+	public QCLoadEvent(Ship ship, Crane crane, int duration) {
 		super(duration);
 		this.ship = ship;
 		this.crane = crane;
@@ -31,7 +31,8 @@ public class QCUnloadEvent extends ScheduledEvent {
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			//crane.setStatus(Crane.LOADING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			crane.pick();
 			crane.setStatus(Crane.OCCUPIED);

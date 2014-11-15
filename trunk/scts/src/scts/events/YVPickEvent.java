@@ -34,10 +34,12 @@ public class YVPickEvent extends ScheduledEvent{
 		if(!handler.isTimeOut()) {
 			vehicle.setStatus(YardVehicle.LOADING);
 			lane.setStatus(Lane.LOADING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			vehicle.setStatus(YardVehicle.TRAVELING);
 			lane.setStatus(Lane.FREE);
+			((UnloadingSimulation)simulation).getState().getVehicleToStackQueue().add(vehicle);
 			//((UnloadingSimulation)simulation).getState().getVehicleQuayQueue().poll();
 			((UnloadingSimulation)simulation).getState().setVehicleAtLane(null);
 			simulation.schedule(new YVTravelEvent(vehicle, 3));

@@ -30,7 +30,8 @@ public class QCSetDownEvent extends ScheduledEvent{
 		if(!handler.isTimeOut()) {
 			crane.setStatus(Crane.SETTINGDOWN);
 			lane.setStatus(Lane.LOADING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			crane.setDown();
 			crane.setStatus(Crane.IDLE);

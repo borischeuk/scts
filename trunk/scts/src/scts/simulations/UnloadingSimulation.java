@@ -18,10 +18,11 @@ import scts.events.EventType;
 import scts.events.InitializationEvent;
 import scts.events.ShipUndockEvent;
 import scts.events.YCLoadEvent;
+import scts.events.YCUnloadEvent;
 import scts.events.YVPickEvent;
 import scts.events.ShipGeneration;
 import scts.events.StopEvent;
-import scts.events.QCUnloadEvent;
+import scts.events.QCLoadEvent;
 import scts.events.QCWaitEvent;
 import scts.events.YVUnloadEvent;
 import scts.events.eventHandler.DockingHandler;
@@ -31,14 +32,20 @@ import simulation.simulation.Simulation;
 
 public class UnloadingSimulation extends Simulation{
 	
+	public static final int RUNNING = 0;
+	public static final int STOP = 2;
+	public static final int PAUSE = 3;
+	
 	private UnloadingSimulation instance;
 	private static SimulationState state;
+	private int status;
 	
 	public UnloadingSimulation() {
 		super();
 		state = new SimulationState();
 		if(instance == null)
 			instance = this;
+		status = STOP;
 		
 		//this.schedule( new ScheduledEvent(new ShipGeneration(), 0) );
 		this.schedule(new InitializationEvent(0));
@@ -79,7 +86,7 @@ public class UnloadingSimulation extends Simulation{
 					for(Crane crane : state.getQCArray()) {
 						if(crane.getStatus() == Crane.IDLE && state.getShipQueue().peek().getNoOfContainer() > 0) {
 							crane.setStatus(Crane.LOADING);
-							this.schedule(new QCUnloadEvent(state.getShipQueue().peek(), crane, 3));
+							this.schedule(new QCLoadEvent(state.getShipQueue().peek(), crane, 3));
 						}
 					}
 				}
@@ -118,7 +125,9 @@ public class UnloadingSimulation extends Simulation{
 						containerStack.getTransferPt().setStatus(SSTransferPt.UNLOADING);
 						this.schedule(new YCLoadEvent(containerStack, 3));
 					} else if (containerStack.getYardCrane().getStatus() == Crane.OCCUPIED) {
-						containerStack.getYardCrane().setStatus(Crane.IDLE);
+						//containerStack.getYardCrane().setStatus(Crane.IDLE);
+						containerStack.getYardCrane().setStatus(Crane.SETTINGDOWN);
+						this.schedule(new YCUnloadEvent(containerStack, 3));
 					}
 				}
 				
@@ -157,8 +166,25 @@ public class UnloadingSimulation extends Simulation{
 		return false;
 	}
 	
+	public int getStatus() {
+		return this.status;
+	}
+	
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
 	public void initialize() {
-		
+		this.stop = false;
+		this.scheduleQueue.clear();
+		this.state = new SimulationState();
+		this.status = STOP;
+		this.schedule(new InitializationEvent(0));
+	}
+	
+	public void resume() {
+		this.stop = false;
+		this.run();
 	}
 	
 }

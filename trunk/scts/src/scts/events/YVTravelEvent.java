@@ -28,7 +28,8 @@ public class YVTravelEvent extends ScheduledEvent{
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			vehicle.setStatus(YardVehicle.TRAVELING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			vehicle.setStatus(YardVehicle.WAITING);
 			((UnloadingSimulation)simulation).getState().getVehicleStackQueue().add(vehicle);

@@ -5,27 +5,12 @@ import java.util.Date;
 
 import simulation.event.ScheduledEvent;
 
-public abstract class BaseSimulation {
-
-	protected ArrayDeque<ScheduledEvent> scheduleQueue;
+public interface BaseSimulation {
 	
-	protected Date startTime;
-	protected long currentTime;
+	public void schedule(ScheduledEvent event);
 	
-	protected boolean stop;
+	public void run();
 	
-	public abstract void schedule(ScheduledEvent event);
-	
-	public abstract void run();
-	
-	public abstract void stop();
-	
-	public Date getStartTime() {
-		return startTime;
-	}
-	
-	public long getCurrentTime() {
-		return currentTime;
-	}
+	public void stop();
 	
 }

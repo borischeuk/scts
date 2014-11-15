@@ -27,15 +27,29 @@ public class ShipView extends JLabel {
 		this.setBounds(x, y, size.width, size.height);
 	}
 	
+	public Dimension getSize() {
+		return size;
+	}
+	
 	public void changeNum(String value) {
 		this.num = value;
 		this.setText(value);
 	}
 	
-	public void move() {
+	/*public void move() {
 		x = this.getX();
 		y = this.getY();
 		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
+		//this.repaint();
+	}*/
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void move(int x, int y) {
+		setPosition(x, y);
+		this.setBounds(this.x, this.y, size.width, size.height);
 	}
 }

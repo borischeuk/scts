@@ -25,7 +25,7 @@ public class Application {
 		
 		frame.add(new ControlPanel(unloadingSimulation), BorderLayout.NORTH);
 		frame.add(new MonitorPanel(), BorderLayout.EAST);
-		frame.add(new LivePanel(), BorderLayout.CENTER);
+		frame.add(new LivePanel(unloadingSimulation), BorderLayout.CENTER);
 		
 		frame.setVisible(true);
 		

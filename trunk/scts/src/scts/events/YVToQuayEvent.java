@@ -28,7 +28,8 @@ public class YVToQuayEvent extends ScheduledEvent{
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			yardVehicle.setStatus(YardVehicle.TRAVELING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			yardVehicle.setStatus(YardVehicle.WAITING);
 			((UnloadingSimulation)simulation).getState().getVehicleQuayQueue().add(yardVehicle);
