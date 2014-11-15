@@ -1,14 +1,16 @@
-package simulation;
+package simulation.simulation;
 
 import java.util.ArrayDeque;
 import java.util.Date;
+
+import simulation.event.ScheduledEvent;
 
 public abstract class BaseSimulation {
 
 	protected ArrayDeque<ScheduledEvent> scheduleQueue;
 	
 	protected Date startTime;
-	protected int currentTime;
+	protected long currentTime;
 	
 	protected boolean stop;
 	
@@ -22,7 +24,7 @@ public abstract class BaseSimulation {
 		return startTime;
 	}
 	
-	public int currentTime() {
+	public long getCurrentTime() {
 		return currentTime;
 	}
 	

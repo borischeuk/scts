@@ -8,7 +8,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import simulation.Simulation;
+import scts.events.StopEvent;
+import scts.events.TestEvent;
+import scts.simulations.UnloadingSimulation;
+import simulation.simulation.Simulation;
 
 public class ControlPanel extends JPanel{
 	
@@ -27,6 +30,7 @@ public class ControlPanel extends JPanel{
 		
 		pauseBtn = new JButton("Pause");
 		stopBtn = new JButton("Stop");
+		stopBtn.addActionListener(new stopListener());
 		
 		this.add(startBtn);
 		this.add(pauseBtn);
@@ -38,10 +42,35 @@ public class ControlPanel extends JPanel{
 	public class startListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
+			Thread thread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					simulation.run();
+				}
+				
+			});
 			
-			simulation.run();
-		}
+			thread.start();
+		}	
+	}
+	
+	public class stopListener implements ActionListener {
 		
+		@Override
+		public void actionPerformed(ActionEvent a) {
+			Thread thread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					simulation.schedule(new StopEvent(simulation, 0));
+					
+				}
+				
+			});
+				
+			thread.run();
+		}
 	}
 	
 }

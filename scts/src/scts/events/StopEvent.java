@@ -1,13 +1,15 @@
 package scts.events;
 
-import simulation.BaseEvent;
-import simulation.Simulation;
+import simulation.event.BaseEvent;
+import simulation.event.ScheduledEvent;
+import simulation.simulation.Simulation;
 
-public class StopEvent extends BaseEvent{
+public class StopEvent extends ScheduledEvent{
 
 	Simulation simulation;
 	
-	public StopEvent(Simulation simulation) {
+	public StopEvent(Simulation simulation, int duration) {
+		super(duration);
 		this.simulation = simulation;
 	}
 	

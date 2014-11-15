@@ -3,10 +3,10 @@ package scts.domain;
 public class Ship {
 	
 	//List of status
-	private final int WAITING = 0;
-	private final int DOCKING = 1;
-	private final int DOCKED = 2;
-	private final int UNDOCKING = 3;
+	public static final int WAITING = 0;
+	public static final int DOCKING = 1;
+	public static final int DOCKED = 2;
+	public static final int UNDOCKING = 3;
 	
 	private int noOfContainer;
 	private boolean isUnloaded;
@@ -32,8 +32,20 @@ public class Ship {
 		this.priority = priority;
 	}
 	
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
 	public int getPriority() {
 		return this.priority;
+	}
+	
+	public int getNoOfContainer() {
+		return this.noOfContainer;
+	}
+	
+	public int getStatus() {
+		return status;
 	}
 	
 	public void removeContainer() {

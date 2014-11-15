@@ -1,21 +1,27 @@
 package scts.events;
 
-import simulation.BaseEvent;
-import simulation.Simulation;
+import simulation.event.EventHandler;
+import simulation.event.ScheduledEvent;
+import simulation.simulation.Simulation;
 
-public class TestEvent extends BaseEvent{
+public class TestEvent extends ScheduledEvent{
 
-	int n;
-	
-	public TestEvent(int n) {
-		this.n = n;
+	public TestEvent(int duration) {
+		super(duration);
 	}
-	
+
 	@Override
 	public void execute(Simulation simulation) {
+		EventHandler handler = new EventHandler(simulation, this);
 		
-		System.out.println("Testing ======================= " + n);
+		System.out.println("=============Testing Testing Testing ========================");
 		
+		handler.adjustTime();
+		if(!handler.isTimeOut())
+			simulation.schedule(this);
+		else {
+			
+		}
 	}
 
 }
