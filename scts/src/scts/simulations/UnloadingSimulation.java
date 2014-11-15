@@ -26,6 +26,7 @@ import scts.events.QCLoadEvent;
 import scts.events.QCWaitEvent;
 import scts.events.YVUnloadEvent;
 import scts.events.eventHandler.DockingHandler;
+import scts.ui.LivePanel;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
@@ -36,7 +37,7 @@ public class UnloadingSimulation extends Simulation{
 	public static final int STOP = 2;
 	public static final int PAUSE = 3;
 	
-	private UnloadingSimulation instance;
+	private static UnloadingSimulation instance;
 	private static SimulationState state;
 	private int status;
 	
@@ -57,11 +58,13 @@ public class UnloadingSimulation extends Simulation{
 		
 		ScheduledEvent currentEvent;
 		
+		this.update();
+		
 		while(!scheduleQueue.isEmpty() && !stop) {
 			
-			System.out.println("Global start time ==================== " + this.startTime);
+			/*System.out.println("Global start time ==================== " + this.startTime);
 			System.out.println("Simulation address ===================== " + this);
-			System.out.println("Event Queue Size =============== " + scheduleQueue.size());
+			System.out.println("Event Queue Size =============== " + scheduleQueue.size());*/
 			
 			currentEvent = scheduleQueue.poll();
 			currentEvent.execute(this);
@@ -93,14 +96,14 @@ public class UnloadingSimulation extends Simulation{
 				
 				//Operation of yard vehicles
 				for(Lane lane : state.getlaneArray()) {
-					System.out.println("Quay queue size ====================== " + state.getVehicleQuayQueue().size());
-					System.out.println("Number of Container ================ " + state.getShipQueue().peek().getNoOfContainer());
+					//System.out.println("Quay queue size ====================== " + state.getVehicleQuayQueue().size());
+					//System.out.println("Number of Container ================ " + state.getShipQueue().peek().getNoOfContainer());
 					if (!state.getVehicleQuayQueue().isEmpty()) {
 					
 						if(lane.getStatus() == Lane.OCCUPIED && state.getVehicleAtLane() == null) {
 							YardVehicle vehiclePolled = state.getVehicleQuayQueue().poll();
 							lane.setStatus(Lane.LOADING);
-							System.out.println("vehicle at quay ================= " + state.getVehicleAtLane());
+							//System.out.println("vehicle at quay ================= " + state.getVehicleAtLane());
 							this.schedule(new YVPickEvent(lane, vehiclePolled, 3));
 						}
 					
@@ -109,10 +112,10 @@ public class UnloadingSimulation extends Simulation{
 				
 				//Operation of sea side transfer point
 				for(ContainerStack containerStack : state.getStackArray()) {
-					System.out.println("Stack Queue size ======================== " + state.getVehicleStackQueue().size());
-					System.out.println("Transfer Point Status ========================= " + containerStack.getTransferPt().getStatus());
+					//System.out.println("Stack Queue size ======================== " + state.getVehicleStackQueue().size());
+					//System.out.println("Transfer Point Status ========================= " + containerStack.getTransferPt().getStatus());
 					if( (!state.getVehicleStackQueue().isEmpty()) && (containerStack.getTransferPt().getStatus() == SSTransferPt.FREE)) {
-						System.out.println("============Waiting at Stack============");
+						//System.out.println("============Waiting at Stack============");
 						containerStack.getTransferPt().setStatus(SSTransferPt.LOADING);
 						YardVehicle vehiclePolled = state.getVehicleStackQueue().poll();
 						this.schedule(new YVUnloadEvent(vehiclePolled, containerStack.getTransferPt(), 3));
@@ -156,7 +159,7 @@ public class UnloadingSimulation extends Simulation{
 		this.currentTime = timeDiff;
 	}
 	
-	public UnloadingSimulation getInstance() {
+	public static UnloadingSimulation getInstance() {
 		return instance;
 	}
 	
@@ -185,6 +188,10 @@ public class UnloadingSimulation extends Simulation{
 	public void resume() {
 		this.stop = false;
 		this.run();
+	}
+	
+	public void update() {
+		new LivePanel(this).getInstance().threadUpdate();
 	}
 	
 }

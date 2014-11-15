@@ -21,7 +21,7 @@ public class YVPickEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Picking ================");
+		//System.out.println("================= Picking ================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		

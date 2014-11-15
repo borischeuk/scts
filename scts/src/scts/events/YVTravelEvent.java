@@ -18,7 +18,7 @@ public class YVTravelEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Traveling ================");
+		//System.out.println("================= Traveling ================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		

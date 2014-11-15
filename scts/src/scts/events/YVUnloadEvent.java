@@ -21,7 +21,7 @@ public class YVUnloadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Vehicle Unload ================");
+		//System.out.println("================= Vehicle Unload ================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		

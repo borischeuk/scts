@@ -36,12 +36,12 @@ public class ShipView extends JLabel {
 		this.setText(value);
 	}
 	
-	/*public void move() {
+	public void move() {
 		x = this.getX();
 		y = this.getY();
 		this.setBounds(x+moveX, y+moveY, size.width, size.height);
 		//this.repaint();
-	}*/
+	}
 	
 	public void setPosition(int x, int y) {
 		this.x = x;
@@ -50,6 +50,6 @@ public class ShipView extends JLabel {
 	
 	public void move(int x, int y) {
 		setPosition(x, y);
-		this.setBounds(this.x, this.y, size.width, size.height);
+		this.setBounds(x, y, size.width, size.height);
 	}
 }
