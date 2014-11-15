@@ -2,16 +2,15 @@ package scts.events;
 
 import scts.domain.ContainerStack;
 import scts.domain.Crane;
-import scts.domain.SSTransferPt;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
-public class YCLoadEvent extends ScheduledEvent{
+public class YCUnloadEvent extends ScheduledEvent{
 
 	ContainerStack containerStack;
 	
-	public YCLoadEvent(ContainerStack containerStack, int duration) {
+	public YCUnloadEvent(ContainerStack containerStack, int duration) {
 		super(duration);
 		this.containerStack = containerStack;
 	}
@@ -19,20 +18,18 @@ public class YCLoadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		EventHandler handler = new EventHandler(simulation, this);
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
+		EventHandler handler = new EventHandler(simulation, this);
+		
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
-			containerStack.getTransferPt().setStatus(SSTransferPt.FREE);
-			containerStack.getYardCrane().setStatus(Crane.OCCUPIED);
+			containerStack.getYardCrane().setStatus(Crane.IDLE);
+			containerStack.setNoOfContainer(containerStack.getNoOfContainer() + 1);
 		}
-		
 	}
 
 }

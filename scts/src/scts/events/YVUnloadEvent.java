@@ -34,7 +34,8 @@ public class YVUnloadEvent extends ScheduledEvent{
 		if(!handler.isTimeOut()) {
 			vehicle.setStatus(YardVehicle.UNLOADING);
 			transferPt.setStatus(SSTransferPt.LOADING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			//((UnloadingSimulation)simulation).getState().getVehicleStackQueue().poll();
 			((UnloadingSimulation)simulation).getState().setVehicleAtTPt(null);

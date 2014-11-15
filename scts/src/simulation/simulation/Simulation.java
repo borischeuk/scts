@@ -2,10 +2,18 @@ package simulation.simulation;
 
 import java.util.ArrayDeque;
 import java.util.Calendar;
+import java.util.Date;
 
 import simulation.event.ScheduledEvent;
 
-public class Simulation extends BaseSimulation{
+public class Simulation implements BaseSimulation{
+	
+	protected ArrayDeque<ScheduledEvent> scheduleQueue;
+	
+	protected Date startTime;
+	protected long currentTime;
+	
+	protected boolean stop;
 
 	public Simulation() {
 		scheduleQueue = new ArrayDeque<ScheduledEvent>();
@@ -36,5 +44,12 @@ public class Simulation extends BaseSimulation{
 		this.stop = true;
 	}
 
+	public Date getStartTime() {
+		return startTime;
+	}
+	
+	public long getCurrentTime() {
+		return currentTime;
+	}
 
 }

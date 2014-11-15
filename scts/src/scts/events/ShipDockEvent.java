@@ -29,7 +29,8 @@ public class ShipDockEvent extends ScheduledEvent{
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			theShip.setStatus(Ship.DOCKING);
-			simulation.schedule(this);
+			//simulation.schedule(this);
+			handler.reschedule();
 		} else {
 			theShip.setStatus(Ship.DOCKED);
 			//Crane crane = ((UnloadingSimulation)simulation).getState().getCraneQueue().peek();

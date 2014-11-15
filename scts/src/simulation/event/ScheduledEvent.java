@@ -6,7 +6,7 @@ import java.util.Date;
 
 import simulation.simulation.Simulation;
 
-public abstract class ScheduledEvent extends BaseEvent implements Comparable<ScheduledEvent>{
+public abstract class ScheduledEvent implements BaseEvent, Comparable<ScheduledEvent>{
 
 	private Date startTime;
 	private long duration;

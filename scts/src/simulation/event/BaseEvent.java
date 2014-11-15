@@ -5,8 +5,8 @@ import java.lang.Comparable;
 
 import simulation.simulation.Simulation;
 
-public abstract class BaseEvent{
+public interface BaseEvent{
 
-	public abstract void execute(Simulation simulation);
+	public void execute(Simulation simulation);
 	
 }

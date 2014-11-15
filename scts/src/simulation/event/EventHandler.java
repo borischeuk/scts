@@ -33,11 +33,14 @@ public class EventHandler {
 	}
 	
 	public boolean isTimeOut() {
-		
 		if(event.getDuration() <= event.getTimeOfOccurance())
 			return true;
 		
 		return false;
+	}
+	
+	public void reschedule() {
+		simulation.schedule(event);
 	}
 	
 }

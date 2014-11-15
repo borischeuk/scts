@@ -22,6 +22,8 @@ public class SimulationState {
 	private Queue<YardVehicle> vehicleStackQueue;
 	private YardVehicle vehicleAtLane;
 	private YardVehicle vehicleAtTPt;
+	private List<YardVehicle> vehicleToStackQueue;
+	private List<YardVehicle> vehicleToQuayQueue;
 	private List<ContainerStack> stackArray;
 	
 	public SimulationState() {
@@ -33,6 +35,7 @@ public class SimulationState {
 		vehicleStackQueue = new ArrayDeque<YardVehicle>();
 		vehicleAtLane = null;
 		vehicleAtTPt = null;
+		vehicleToStackQueue = new ArrayList<YardVehicle>();
 		stackArray = new ArrayList<ContainerStack>();
 	}
 	
@@ -66,6 +69,14 @@ public class SimulationState {
 	
 	public YardVehicle getVehicleAtTPt() {
 		return vehicleAtTPt;
+	}
+	
+	public List<YardVehicle> getVehicleToStackQueue() {
+		return vehicleToStackQueue;
+	}
+	
+	public List<YardVehicle> getVehicleToQuayQueue() {
+		return vehicleToQuayQueue;
 	}
 	
 	public List<ContainerStack> getStackArray() {
@@ -102,6 +113,14 @@ public class SimulationState {
 	
 	public void setVehicleAtTPt(YardVehicle vehicle) {
 		this.vehicleAtTPt = vehicle;
+	}
+	
+	public void setVehicleTravelingQueue(List<YardVehicle> vehicleToStackQueue) {
+		this.vehicleToStackQueue = vehicleToStackQueue;
+	}
+	
+	public void setVehicleToQuayQueue(List<YardVehicle> vehicleToQuayQueue) {
+		this.vehicleToQuayQueue = vehicleToQuayQueue;
 	}
 	
 	public void setStackArray(List<ContainerStack> stackArray) {
