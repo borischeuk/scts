@@ -8,7 +8,7 @@ import scts.simulations.UnloadingSimulation;
 import scts.ui.ControlPanel;
 import scts.ui.LivePanel;
 import scts.ui.MonitorPanel;
-import simulation.Simulation;
+import simulation.simulation.Simulation;
 
 
 public class Application {

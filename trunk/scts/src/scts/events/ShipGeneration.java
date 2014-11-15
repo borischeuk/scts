@@ -7,16 +7,18 @@ import java.util.Random;
 
 import scts.domain.Ship;
 import scts.simulations.UnloadingSimulation;
-import simulation.BaseEvent;
-import simulation.Simulation;
+import simulation.event.BaseEvent;
+import simulation.event.ScheduledEvent;
+import simulation.simulation.Simulation;
 
-public class ShipGeneration extends BaseEvent{
+public class ShipGeneration extends ScheduledEvent{
 	
 	//For subsequent release
 	private int noOfShipArrive;
 	private ArrayList<Integer> priorityArray;
 	
-	public ShipGeneration() {
+	public ShipGeneration(int duration) {
+		super(duration);
 	}
 	
 	@Override
@@ -30,10 +32,11 @@ public class ShipGeneration extends BaseEvent{
 		PriorityQueue<Ship> shipQueue = new PriorityQueue<Ship>();
 		shipQueue.add(ship);
 		
-		unloadingSimulation.setShipQueue(shipQueue);
+		unloadingSimulation.getState().setShipQueue(shipQueue);
 		
-		System.out.println("Total Number of Ship Generated ================= " + unloadingSimulation.getShipQueue().size());
+		System.out.println("Total Number of Ship Generated ================= " + unloadingSimulation.getState().getShipQueue().size());
 		
+		//simulation.schedule( new DockingEvent( ( (UnloadingSimulation)simulation).getState().getShipQueue().peek(), 10) );
 	}
 
 }
