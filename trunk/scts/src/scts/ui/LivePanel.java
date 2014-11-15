@@ -41,7 +41,10 @@ public class LivePanel extends JPanel {
 	private JLabel numShipWaiting;
 	private JLabel numYV;
 	private JLabel numQC;
-	private JLabel laneContainers;
+	private JLabel QCStatus;
+	private JLabel laneStatus;
+	private JLabel seasideStatus;
+	private JLabel landsideStatus;
 	private ConfigValues values;
 	
 	public LivePanel(Simulation simulation) {
@@ -61,14 +64,26 @@ public class LivePanel extends JPanel {
 		numYV = new JLabel("Number of Yard Vehicles: " + values.getNumYV());
 		numYV.setBounds(10, 350, numYV.getPreferredSize().width, numYV.getPreferredSize().height);
 		
-		laneContainers = new JLabel("0");
-		laneContainers.setBounds(300, 200, laneContainers.getPreferredSize().width, laneContainers.getPreferredSize().height);
+		QCStatus = new JLabel("Quay Crane Status: ");
+		QCStatus.setBounds(450, 100, QCStatus.getPreferredSize().width, QCStatus.getPreferredSize().height);
+		
+		laneStatus = new JLabel("Lane Status: ");
+		laneStatus.setBounds(450, 200, laneStatus.getPreferredSize().width, laneStatus.getPreferredSize().height);
+		
+		seasideStatus = new JLabel("Seaside Trnasfer Point Status: ");
+		seasideStatus.setBounds(500, 370, seasideStatus.getPreferredSize().width, seasideStatus.getPreferredSize().height);
+		
+		landsideStatus = new JLabel("Landside Transfer Point Status: ");
+		landsideStatus.setBounds(500, 500, landsideStatus.getPreferredSize().width, landsideStatus.getPreferredSize().height);
 		
 		this.setLayout(null);
 		this.add(numShipWaiting);
 		this.add(numQC);
 		this.add(numYV);
-		this.add(laneContainers);
+		this.add(QCStatus);
+		this.add(laneStatus);
+		this.add(seasideStatus);
+		this.add(landsideStatus);
 		this.add(quayCrane);
 		this.add(yardVehicle);
 		this.add(ship);

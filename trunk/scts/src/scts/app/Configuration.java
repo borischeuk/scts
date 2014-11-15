@@ -11,7 +11,6 @@ import scts.domain.ConfigValues;
 public class Configuration {
 	
 	private String default_file_name = "\\default.txt";
-	private String currentFileName = "\\currentConfig.txt";
 	private String outputFile = "currentConfig.txt";
 	private ConfigValues configValues;
 	
@@ -54,6 +53,7 @@ public class Configuration {
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
 			
+			writer.write("simulationSpeed=" + data.getSimulationSpeed() + "\n");
 			writer.write("dockMinTime=" + data.getDockMinTime() + "\n");
 			writer.write("dockMaxTime=" + data.getDockMaxTime() + "\n");
 			writer.write("undockMinTime=" + data.getUndockMinTime() + "\n");
