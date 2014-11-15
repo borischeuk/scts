@@ -191,7 +191,7 @@ public class UnloadingSimulation extends Simulation{
 	}
 	
 	public void update() {
-		new LivePanel(this).getInstance().threadUpdate();
+		new LivePanel(this).getInstance().timerUpdate();
 	}
 	
 }
