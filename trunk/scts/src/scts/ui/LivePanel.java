@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import scts.domain.ConfigValues;
 import scts.domain.ContainerStack;
@@ -28,8 +29,9 @@ import simulation.simulation.Simulation;
 
 public class LivePanel extends JPanel {
 	
-	LivePanel instance;
-	Thread thread;
+	private LivePanel instance;
+	private Thread thread;
+	private Timer timer;
 	
 	private Simulation simulation;
 	private SimulationState state;
@@ -60,11 +62,20 @@ public class LivePanel extends JPanel {
 			public void run() {
 				while(true) {
 					try {
-						thread.sleep(100);
+						thread.sleep(2000);
 					} catch (InterruptedException e) {
 					}
 					update();
 				}
+			}
+			
+		});
+		
+		timer = new Timer(2000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				update();
 			}
 			
 		});
@@ -154,6 +165,8 @@ public class LivePanel extends JPanel {
 		
 		ship.move();
 		
+		System.out.println("==============Test===========");
+		
 		Point shipInitPos = new Point(10, 10);
 		Point shipDockPos = new Point((this.getSize().width/4), 10);
 		Point shipWaitPos = new Point((this.getSize().width/2), 10);
@@ -161,7 +174,7 @@ public class LivePanel extends JPanel {
 		Point shipLastPos = new Point((this.getSize().width), 10);
 		
 		if(shipInBerth.getStatus() == Ship.DOCKING) {
-			System.out.println("==============Test===========");
+			
 			Point newPos = new Point();
 			if(ship.getLocation().equals(shipInitPos)) newPos = shipDockPos;
 			if(ship.getLocation().equals(shipDockPos)) newPos = shipWaitPos;
@@ -189,5 +202,9 @@ public class LivePanel extends JPanel {
 	
 	public void threadUpdate() {
 		thread.start();
+	}
+	
+	public void timerUpdate() {
+		timer.start();
 	}
 }
