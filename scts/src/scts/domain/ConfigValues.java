@@ -8,23 +8,8 @@ import java.io.IOException;
 import scts.app.Configuration;
 
 public class ConfigValues {
-	/*
-	 * Time for ship to dock or undock containers : 10 - 20 mins;
-Quay Crane to remove a container from a ship: 1-5 mins;
-Quay Crane to place a container in the Quay Area: 1-2 mins
-Yard Vehicle to pick up container after leaving queue: 1-3 mins
-YV travel to sea-side transfer point: 5-10 mins
-YV to drop its container: 1-2 mins
-YV to travel to Quay Area queue3-5 mins
-No. of containers: 8000 - 18000 TEU (Twentyfoot Equivalent Unit??)
-Max allowable size of the stack: 2000 TEU
-Num of QC1
-Initial value: 500 TEU
-Yard Vehicles: 200
-Time limit for a run: 1 day
-Num of ships already waiting: 2 without priority
 
-	 */
+	private int simulationSpeed;
 	private int dockMinTime;
 	private int dockMaxTime;
 	private int undockMinTime;
@@ -52,6 +37,7 @@ Num of ships already waiting: 2 without priority
 	private String inputFileName = "\\currentConfig.txt";
 	
 	public enum Var {
+		simulationSpeed,
 		dockMinTime,
 		dockMaxTime,
 		undockMinTime,
@@ -103,6 +89,9 @@ Num of ships already waiting: 2 without priority
 	
 	public void setConfigValues(String name, int value) {
 		switch (Var.valueOf(name)) {
+		case simulationSpeed:
+			this.simulationSpeed = value;
+			break;
 		case dockMinTime:
 			this.dockMinTime = value;
 			break;
@@ -179,105 +168,12 @@ Num of ships already waiting: 2 without priority
 			break;
 		}
 	}
-	
-	// Set Values
-	public void setDockMinTime(int dockMinTime) {
-		this.dockMinTime = dockMinTime;
-	}
-	
-	public void setDockMaxTime(int dockMaxTime) {
-		this.dockMaxTime = dockMaxTime;
-	}
-	
-	public void setUndockMinTime(int undockMinTime) {
-		this.undockMinTime = undockMinTime;
-	}
-	
-	public void setUndockMaxTime(int undockMaxTime) {
-		this.undockMaxTime = undockMaxTime;
-	}
-	
-	public void setqcRemoveMinTime(int qcRemoveMinTime) {
-		this.qcRemoveMinTime = qcRemoveMinTime;
-	}
-	
-	public void setqcRemoveMaxTime(int qcRemoveMaxTime) {
-		this.qcRemoveMaxTime = qcRemoveMaxTime;
-	}
-	
-	public void setqcPlaceMinTime(int qcPlaceMinTime) {
-		this.qcPlaceMinTime = qcPlaceMinTime;
-	}
-	
-	public void setqcPlaceMaxTime(int qcPlaceMaxTime) {
-		this.qcPlaceMaxTime = qcPlaceMaxTime;
-	}
-	
-	public void setyvPickMinTime(int yvPickMinTime) {
-		this.yvPickMinTime = yvPickMinTime;
-	}
-	
-	public void setyvPickMaxTime(int yvPickMaxTime) {
-		this.yvPickMaxTime = yvPickMaxTime;
-	}
-	
-	public void setyvDropMinTime(int yvDropMinTime) {
-		this.yvDropMinTime = yvDropMinTime;
-	}
-	
-	public void setyvDropMaxTime(int yvDropMaxTime) {
-		this.yvDropMaxTime = yvDropMaxTime;
-	}
-	
-	public void setyvTravelToSeaSideMinTime(int yvTravelToSeaSideMinTime) {
-		this.yvTravelToSeaSideMinTime = yvTravelToSeaSideMinTime;
-	}
-	
-	public void setyvTravelToSeaSideMaxTime(int yvTravelToSeaSideMaxTime) {
-		this.yvTravelToSeaSideMaxTime = yvTravelToSeaSideMaxTime;
-	}
-	
-	public void setyvTravelToQAMinTime(int yvTravelToQAMinTime) {
-		this.yvTravelToQAMinTime = yvTravelToQAMinTime;
-	}
-	
-	public void setyvTravelToQAMaxTime(int yvTravelToQAMaxTime) {
-		this.yvTravelToQAMaxTime = yvTravelToQAMaxTime;
-	}
-	
-	public void setMinContainers(int minContainers) {
-		this.minContainers = minContainers;
-	}
-	
-	public void setMaxContainers(int maxContainers) {
-		this.maxContainers = maxContainers;
-	}
-	
-	public void setMaxStackSize(int maxStackSize) {
-		this.maxStackSize = maxStackSize;
-	}
-	
-	public void setInitialStackSize(int initialStackSize) {
-		this.initialStackSize = initialStackSize;
-	}
-	
-	public void setNumQC(int numQC) {
-		this.numQC = numQC;
-	}
-	
-	public void setNumYV(int numYV) {
-		this.numYV = numYV;
-	}
-	
-	public void setTimeLimit(int timeLimit) {
-		this.timeLimit = timeLimit;
-	}
-	
-	public void setNumShipsWaiting(int numShipsWaiting) {
-		this.numShipsWaiting = numShipsWaiting;
-	}
+
 	
 	// get values
+	public int getSimulationSpeed() {
+		return simulationSpeed;
+	}
 	
 	public int getDockMinTime() {
 		return dockMinTime;

@@ -1,3 +1,4 @@
+simulationSpeed=1
 dockMinTime=10
 dockMaxTime=20
 undockMinTime=10

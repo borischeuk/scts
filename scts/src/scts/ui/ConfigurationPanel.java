@@ -20,6 +20,7 @@ public class ConfigurationPanel{
 	private JLabel title;
 	private JButton defaultBtn;
 	private JButton startBtn;
+	private JLabel simulationSpeedLabel;
 	private JLabel dockTime;
 	private JLabel undockTime;
 	private JLabel qcRemoveTime;
@@ -35,6 +36,7 @@ public class ConfigurationPanel{
 	private JLabel numYVLabel;
 	private JLabel timeLimitLabel;
 	private JLabel numShipsWaitingLabel;
+	private JTextField simulationSpeed;
 	private JTextField dockMinTime;
 	private JTextField dockMaxTime;
 	private JTextField undockMinTime;
@@ -81,6 +83,11 @@ public class ConfigurationPanel{
 		// Panel "display"
 		title = new JLabel("Simulation Settings");
 		display.add(title);
+		
+		simulationSpeedLabel = new JLabel("Simulation Speed: ");
+		simulationSpeed = new JTextField(5);
+		JPanel simulationSpeedPanel = addLabelTextField(simulationSpeedLabel, simulationSpeed);
+		display.add(simulationSpeedPanel);
 		
 		dockTime = new JLabel("Durations for ship to dock (mins): ");
 		dockMinTime = new JTextField(5);
@@ -183,6 +190,7 @@ public class ConfigurationPanel{
 	}
 	
 	private void setValues(ConfigValues data) {
+		simulationSpeed.setText(Integer.toString(data.getSimulationSpeed()));
 		dockMinTime.setText(Integer.toString(data.getDockMinTime()));
 		dockMaxTime.setText(Integer.toString(data.getDockMaxTime()));
 		undockMinTime.setText(Integer.toString(data.getUndockMinTime()));
@@ -225,6 +233,7 @@ public class ConfigurationPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					data.setConfigValues("simulationSpeed", Integer.parseInt(simulationSpeed.getText()));
 					data.setConfigValues("dockMinTime", Integer.parseInt(dockMinTime.getText()));
 					data.setConfigValues("dockMaxTime", Integer.parseInt(dockMaxTime.getText()));
 					data.setConfigValues("undockMinTime", Integer.parseInt(undockMinTime.getText()));
