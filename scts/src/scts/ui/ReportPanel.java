@@ -17,25 +17,13 @@ public class ReportPanel{
 	
 	private JLabel title;
 	private JLabel totalShips;
-	private JLabel avgShips;
 	private JLabel totalContainers;
-	private JLabel avgContainers;
-	private JLabel nonPriorityServiceTime;
-	private JLabel maxNPShipServiceTime;
-	private JLabel minNPShipServiceTime;
-	private JLabel avgNPShipServiceTime;
-	private JLabel priorityServiceTime;
-	private JLabel maxPShipServiceTime;
-	private JLabel minPShipServiceTime;
-	private JLabel avgPShipServiceTime;
-	private JLabel longestShipServiceTime;
+	private JLabel shipServiceTime;
+	private JLabel quayCraneUnloadTime; 
 	private JLabel longestShipQueue;
 	private JLabel maxRoadVehicleQueue;
-	private JLabel stackSize;
-	private JLabel maxStackSize;
-	private JLabel minStackSize;
-	private JLabel avgStackSize;
-	private JLabel yardVehiclePercentageTimeSpent;
+	private JLabel yardVehiclePercentageTimeSpentInQA;
+	private JLabel yardVehiclePercentageTimeSpentInSeaside;
 	private JButton saveBtn;
 	private Stats data;
 	
@@ -53,88 +41,31 @@ public class ReportPanel{
 		frame.add(panel);
 		
 		title = new JLabel("Operational Statistics", JLabel.CENTER);
-//		title.setPreferredSize(new Dimension(380, 20));
 		panel.add(title);
 		
 		totalShips = new JLabel("Total Number of Ships Unloaded: " + stats.getTotalShips());
-//		totalShips.setPreferredSize(new Dimension(380, 20));
 		panel.add(totalShips);
 		
-		avgShips = new JLabel("Average Number of Ships Unloaded: " + stats.getAvgShips());
-//		avgShips.setPreferredSize(new Dimension(380, 20));
-		panel.add(avgShips);
-		
 		totalContainers = new JLabel("Total Number of Containers Transferred: " + stats.getTotalContainers());
-//		totalContainers.setPreferredSize(new Dimension(380, 20));
 		panel.add(totalContainers);
 		
-		avgContainers = new JLabel("Average Number of Containers Transferred: " + stats.getAvgContainers());
-//		avgContainers.setPreferredSize(new Dimension(380, 20));
-		panel.add(avgContainers);
+		shipServiceTime = new JLabel("Service Time Experienced by the Ship: " + stats.getShipServiceTime());
+		panel.add(shipServiceTime);
 		
-		nonPriorityServiceTime = new JLabel("Service Time from Arrival to Departure (Non-priority Ships)");
-//		nonPriorityServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(nonPriorityServiceTime);
-		
-		maxNPShipServiceTime = new JLabel("Maximum: " + stats.getNPMaxServiceTime());
-//		maxNPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(maxNPShipServiceTime);
-
-		minNPShipServiceTime = new JLabel("Minimum: " + stats.getNPMinServiceTime());
-//		minNPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(minNPShipServiceTime);
-		
-		avgNPShipServiceTime = new JLabel("Average: " + stats.getNPAvgServiceTime());
-//		avgNPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(avgNPShipServiceTime);
-		
-		priorityServiceTime = new JLabel("Service Time from Arrival to Departure (Priority Ships)");
-//		priorityServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(priorityServiceTime);
-		
-		maxPShipServiceTime = new JLabel("Maximum: " + stats.getPMaxServiceTime());
-//		maxPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(maxPShipServiceTime);
-
-		minPShipServiceTime = new JLabel("Minimum: " + stats.getPMinServiceTime());
-//		minPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(minPShipServiceTime);
-		
-		avgPShipServiceTime = new JLabel("Average: " + stats.getPAvgServiceTime());
-//		avgPShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(avgPShipServiceTime);
-		
-		longestShipServiceTime = new JLabel("Longest Service Time Experienced by a Ship: " + stats.getLongestServiceTime());
-//		longestShipServiceTime.setPreferredSize(new Dimension(380, 20));
-		panel.add(longestShipServiceTime);
+		quayCraneUnloadTime= new JLabel("Service Time of Quay Crane: " + stats.getQuayCraneUnloadTime());
+		panel.add(quayCraneUnloadTime);
 		
 		longestShipQueue = new JLabel("Largest Number of Ships Waiting for Unloading: " + stats.getLongestShipQueue());
-//		longestShipQueue.setPreferredSize(new Dimension(380, 20));
 		panel.add(longestShipQueue);
 		
 		maxRoadVehicleQueue = new JLabel("Maximum Length of Road Vehicle Queue: " + stats.getMaxRoadVehicleQueue());
-//		maxRoadVehicleQueue.setPreferredSize(new Dimension(380, 20));
 		panel.add(maxRoadVehicleQueue);
 		
-		stackSize = new JLabel("Stack Size");
-//		stackSize.setPreferredSize(new Dimension(380, 20));
-		panel.add(stackSize);
+		yardVehiclePercentageTimeSpentInQA = new JLabel("Percentage of Time Spent by Yard Vehicles In Quay Area: " + stats.getYardVehiclePercentageTimeSpentInQA() + "%");
+		panel.add(yardVehiclePercentageTimeSpentInQA);
 		
-		maxStackSize = new JLabel("Maximum: " + stats.getMaxStackSize());
-//		maxStackSize.setPreferredSize(new Dimension(380, 20));
-		panel.add(maxStackSize);
-
-		minStackSize = new JLabel("Minimum: " + stats.getMinStackSize());
-//		minStackSize.setPreferredSize(new Dimension(380, 20));
-		panel.add(minStackSize);
-		
-		avgStackSize = new JLabel("Average: " + stats.getAvgStackSize());
-//		avgStackSize.setPreferredSize(new Dimension(380, 20));
-		panel.add(avgStackSize);
-		
-		yardVehiclePercentageTimeSpent = new JLabel("Percentage of Time Spent by Yard Vehicles: " + stats.getYardVehiclePercentageTimeSpent());
-//		yardVehiclePercentageTimeSpent.setPreferredSize(new Dimension(380, 20));
-		panel.add(yardVehiclePercentageTimeSpent);
+		yardVehiclePercentageTimeSpentInSeaside = new JLabel("Percentage of Time Spent by Yard Vehicles In Seaside Transfer Point: " + stats.getYardVehiclePercentageTimeSpentInSeaside() + "%");
+		panel.add(yardVehiclePercentageTimeSpentInSeaside);
 		
 		saveBtn = new JButton("Save as Text File");
 		panel.add(saveBtn);

@@ -24,25 +24,13 @@ public class ReportGeneration {
 			
 			writer.write("Operational Statistics\r\n");
 			writer.write("Total Number of Ships Unloaded: " + stats.getTotalShips() + "\r\n");
-			writer.write("Average Number of Ships Unloaded: " + stats.getAvgShips() + "\r\n");
 			writer.write("Total Number of Containers Transferred: " + stats.getTotalContainers() + "\r\n");
-			writer.write("Average Number of Containers Transferred: " + stats.getAvgContainers() + "\r\n");
-			writer.write("Service Time from Arrival to Departure (Non-priority Ships)\r\n");
-			writer.write("Maximum: " + stats.getNPMaxServiceTime() + "\r\n");
-			writer.write("Minimum: " + stats.getNPMinServiceTime() + "\r\n");
-			writer.write("Average: " + stats.getNPAvgServiceTime() + "\r\n");
-			writer.write("Service Time from Arrival to Departure (Priority Ships)\r\n");
-			writer.write("Maximum: " + stats.getPMaxServiceTime() + "\r\n");
-			writer.write("Minimum: " + stats.getPMinServiceTime() + "\r\n");
-			writer.write("Average: " + stats.getPAvgServiceTime() + "\r\n");
-			writer.write("Longest Service Time Experienced by a Ship: " + stats.getLongestServiceTime() + "\r\n");
+			writer.write("Service Time Experienced by the Ship: " + stats.getShipServiceTime() + "\r\n");
+			writer.write("Service Time of Quay Crane: " + stats.getQuayCraneUnloadTime() + "\r\n");
 			writer.write("Largest Number of Ships Waiting for Unloading: " + stats.getLongestShipQueue() + "\r\n");
 			writer.write("Maximum Length of Road Vehicle Queue: " + stats.getMaxRoadVehicleQueue() + "\r\n");
-			writer.write("Stack Size\r\n");
-			writer.write("Maximum: " + stats.getMaxStackSize() + "\r\n");
-			writer.write("Minimum: " + stats.getMinStackSize() + "\r\n");
-			writer.write("Average: " + stats.getAvgStackSize() + "\r\n");
-			writer.write("Percentage of Time Spent by Yard Vehicles: " + stats.getYardVehiclePercentageTimeSpent() + "\r\n");
+			writer.write("Percentage of Time Spent by Yard Vehicles in Quay Area: " + stats.getYardVehiclePercentageTimeSpentInQA() + "%\r\n");
+			writer.write("Percentage of Time Spent by Yard Vehicles in Seaside Transfer Point: " + stats.getYardVehiclePercentageTimeSpentInSeaside() + "%\r\n");
 
 			writer.flush();
 			writer.close();
