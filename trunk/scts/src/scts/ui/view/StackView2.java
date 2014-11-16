@@ -6,19 +6,19 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class ShipView2 {
+public class StackView2 {
 
-	final private int initialX = 10;
-	final private int initialY = 10;
+	final private int initialX = 300;
+	final private int initialY = 350;
 	private int x;
 	private int y;
 	private Image image;
 	
-	public ShipView2() {
+	public StackView2() {
 		x = initialX;
 		y = initialY;
 		try {
-			image = ImageIO.read(new File("src//scts//ui//view//ship.png"));
+			image = ImageIO.read(new File("src//scts//ui//view//stack.png"));
 		} catch (IOException e) {
 			System.out.println(e);
 		}
