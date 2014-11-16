@@ -1,10 +1,13 @@
 package scts.events;
 
+import scts.domain.ConfigValues;
 import scts.domain.Crane;
 import scts.domain.Lane;
+import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
+import simulation.utils.RandomFactory;
 
 public class QCWaitEvent extends ScheduledEvent{
 
@@ -30,7 +33,12 @@ public class QCWaitEvent extends ScheduledEvent{
 			handler.reschedule();
 		} else {
 			//System.out.println("Lane does not have container");
-			simulation.schedule(new QCSetDownEvent(crane, lane, 3));
+			
+			ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
+			int minTime = configValues.getqcPlaceMinTime();
+			int maxTime = configValues.getqcPlaceMaxTime();
+			int duration = RandomFactory.randSimulationTime(minTime, maxTime, configValues.getSimulationSpeed());
+			simulation.schedule(new QCSetDownEvent(crane, lane, duration));
 		}
 	}
 
