@@ -49,9 +49,14 @@ public class LivePanel extends JPanel {
 	private JLabel seasideStatus;
 	private JLabel landsideStatus;
 	private ConfigValues values;
+	private int x;
+	private int y;
 	
 	public LivePanel(Simulation simulation) {
 		//super();
+		
+		x = 100;
+		y = 100;
 		
 		if(instance == null)
 			instance = this;
@@ -149,7 +154,7 @@ public class LivePanel extends JPanel {
 		if(!state.getShipQueue().isEmpty())
 			shipInBerth = state.getShipQueue().peek();
 		//The crane used in this simulation
-		Crane crane;
+		Crane crane = new Crane();
 		if(!state.getQCArray().isEmpty())
 			crane = state.getQCArray().get(0);
 		//The vehicle in different positions
@@ -196,9 +201,31 @@ public class LivePanel extends JPanel {
 		Point vehicleToQuayPos = new Point((this.getSize().width/4)*3, 10);
 		Point vehicleLastPos = new Point((this.getSize().width), 10);
 		
+		numShipWaiting.setText("Number of ships waiting: " + state.getShipQueue().size());
+		numQC.setText("Number of Quay Cranes: " + state.getQCArray().size());
+		String qcStatus = "";
+		if(crane.getStatus() == Crane.IDLE) qcStatus = "IDLE";
+		else if(crane.getStatus() == Crane.LOADING) qcStatus = "Loading";
+		else if(crane.getStatus() == Crane.OCCUPIED) qcStatus = "Occupied";
+		else qcStatus = "Unloading";
+		QCStatus.setText("Quay Crane Status: " + qcStatus);
+		
+		revalidate();
 		repaint();
 		
 	}
+	
+	/*public void update() {
+		
+		System.out.println("========Test=========");
+		
+		JLabel testLabel = new JLabel("Test Test Test");
+		testLabel.setLocation(new Point(x+10, y+10));
+		
+		//this.invalidate();
+		//this.paint(this.getGraphics());
+		repaint(1000);
+	}*/
 	
 	public void threadUpdate() {
 		thread.start();

@@ -1,7 +1,12 @@
 package scts.ui.view;
 
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -15,6 +20,7 @@ public class ShipView extends JLabel {
 	private int moveX = 1;
 	private int moveY = 0;
 	private Dimension size;
+	private Image image;
 	
 	public ShipView() {
 		super();
@@ -24,11 +30,28 @@ public class ShipView extends JLabel {
 		x = initialX;
 		y = initialY;
 		size = this.getPreferredSize();
+		try {
+			image = ImageIO.read(new File("src//scts//ui//view//ship.png"));
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 		this.setBounds(x, y, size.width, size.height);
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 	
 	public Dimension getSize() {
 		return size;
+	}
+	
+	public Image getImage() {
+		return image;
 	}
 	
 	public void changeNum(String value) {
@@ -39,7 +62,8 @@ public class ShipView extends JLabel {
 	public void move() {
 		x = this.getX();
 		y = this.getY();
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
+		//this.setBounds(x+moveX, y+moveY, size.width, size.height);
+		this.setLocation(new Point(x+moveX, y+moveY));
 		//this.repaint();
 	}
 	
@@ -49,7 +73,14 @@ public class ShipView extends JLabel {
 	}
 	
 	public void move(int x, int y) {
-		setPosition(x, y);
+		this.setPosition(x, y);
 		this.setBounds(x, y, size.width, size.height);
+		//this.setLocation(new Point(x, y));
+	}
+	
+	public void move(Point newPoint) {
+		this.setPosition(newPoint.x, newPoint.y);
+		//this.setBounds(x, y, size.width, size.height);
+		this.setLocation(newPoint);
 	}
 }

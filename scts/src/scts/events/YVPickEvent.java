@@ -1,11 +1,13 @@
 package scts.events;
 
+import scts.domain.ConfigValues;
 import scts.domain.Lane;
 import scts.domain.YardVehicle;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
+import simulation.utils.RandomFactory;
 
 public class YVPickEvent extends ScheduledEvent{
 
@@ -42,7 +44,13 @@ public class YVPickEvent extends ScheduledEvent{
 			((UnloadingSimulation)simulation).getState().getVehicleToStackQueue().add(vehicle);
 			//((UnloadingSimulation)simulation).getState().getVehicleQuayQueue().poll();
 			((UnloadingSimulation)simulation).getState().setVehicleAtLane(null);
-			simulation.schedule(new YVTravelEvent(vehicle, 3));
+			
+			ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
+			int minTime = configValues.getyvTravelToSeaSideMinTime();
+			int maxTime = configValues.getyvTravelToSeaSideMaxTime();
+			int simulationSpeed = configValues.getSimulationSpeed();
+			int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+			simulation.schedule(new YVTravelEvent(vehicle, duration));
 		}
 	}
 

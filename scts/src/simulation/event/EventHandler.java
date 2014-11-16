@@ -25,6 +25,7 @@ public class EventHandler {
 		long timeDiff = ( Calendar.getInstance().getTimeInMillis() - eventStartTime.getTime() ) / 1000;
 		/*System.out.println("Current Time ================== " + Calendar.getInstance().getTime());
 		System.out.println("Event start time ================== " + eventStartTime);
+		System.out.println("Event duration ======================== " + event.getDuration());
 		System.out.println("Time Difference ================== " + timeDiff);*/
 		eventTimeOfOccurance = timeDiff;
 		event.setTimeOfOccurance(eventTimeOfOccurance);

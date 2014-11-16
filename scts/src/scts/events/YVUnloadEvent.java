@@ -1,5 +1,6 @@
 package scts.events;
 
+import scts.domain.ConfigValues;
 import scts.domain.SSTransferPt;
 import scts.domain.YardVehicle;
 import scts.simulations.UnloadingSimulation;
@@ -40,7 +41,12 @@ public class YVUnloadEvent extends ScheduledEvent{
 			//((UnloadingSimulation)simulation).getState().getVehicleStackQueue().poll();
 			((UnloadingSimulation)simulation).getState().setVehicleAtTPt(null);
 			transferPt.setStatus(SSTransferPt.OCCUPIED);
-			simulation.schedule(new YVToQuayEvent(vehicle, 3));
+			
+			ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
+			int minTime = configValues.getyvTravelToQAMinTime();
+			int maxTime = configValues.getyvTravelToQAMaxTime();
+			int duration = configValues.getSimulationSpeed();
+			simulation.schedule(new YVToQuayEvent(vehicle, duration));
 		}
 	}
 
