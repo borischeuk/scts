@@ -1,6 +1,7 @@
 package scts.ui.view;
 
 import java.awt.Dimension;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ public class QuayCraneView extends JLabel {
 	private int moveX = 1;
 	private int moveY = 1;
 	private Dimension size;
+	private Image image;
 	
 	public QuayCraneView() {
 		super();
