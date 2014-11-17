@@ -28,8 +28,6 @@ public class QCWaitEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Waiting ================");
-		
 		EventHandler handler = new EventHandler(simulation, this);
 		
 		if(lane.hasContainer() || lane.getStatus() == Lane.LOADING) {

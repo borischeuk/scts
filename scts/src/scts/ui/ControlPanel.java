@@ -4,12 +4,16 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayDeque;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import scts.events.StopEvent;
 import scts.simulations.UnloadingSimulation;
+import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
 public class ControlPanel extends JPanel{
@@ -63,6 +67,7 @@ public class ControlPanel extends JPanel{
 
 					@Override
 					public void run() {
+						LivePanel.getInstance().startTimer();
 						simulation.run();
 					}
 				
@@ -78,14 +83,13 @@ public class ControlPanel extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			System.out.println("============== Pause ==============");
-			
 			if(((UnloadingSimulation)simulation).getStatus() == UnloadingSimulation.RUNNING) {
 				((UnloadingSimulation)simulation).setStatus(UnloadingSimulation.PAUSE);
 				Thread thread = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
+						LivePanel.getInstance().stopTimer();
 						simulation.schedule(new StopEvent(simulation, 0));
 					}
 				
@@ -102,15 +106,27 @@ public class ControlPanel extends JPanel{
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("============== Pause ==============");
 			int status = ((UnloadingSimulation)simulation).getStatus();
-			
+
 			if(status == UnloadingSimulation.PAUSE) {
+				
 				Thread thread = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
+						
+						ArrayDeque<ScheduledEvent> scheduleQueue = ((UnloadingSimulation)simulation).getScheduleQueue();
+						
+						//Reset the startTime of the events in the event queue.
+						for(ScheduledEvent event : scheduleQueue) {
+							long timeOfOccurance = event.getTimeOfOccurance();
+							long newTime = Calendar.getInstance().getTimeInMillis() - timeOfOccurance;
+							Date newStartTime = new Date(newTime);
+							event.setStartTime(newStartTime);
+						}
+						
 						((UnloadingSimulation)simulation).setStatus(UnloadingSimulation.RUNNING);
+						LivePanel.getInstance().startTimer();
 						((UnloadingSimulation)simulation).resume();
 					}
 					
@@ -133,6 +149,7 @@ public class ControlPanel extends JPanel{
 
 				@Override
 				public void run() {
+					LivePanel.getInstance().stopTimer();
 					simulation.schedule(new StopEvent(simulation, 0));
 					
 				}

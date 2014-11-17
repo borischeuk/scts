@@ -29,8 +29,6 @@ public class YVUnloadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= Vehicle Unloading ================");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
@@ -50,7 +48,6 @@ public class YVUnloadEvent extends ScheduledEvent{
 			int minTime = configValues.getyvTravelToQAMinTime();
 			int maxTime = configValues.getyvTravelToQAMaxTime();
 			int simulationSpeed = configValues.getSimulationSpeed();
-			//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 			long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 			simulation.schedule(new YVToQuayEvent(vehicle, duration));
 			

@@ -28,8 +28,6 @@ public class QCLoadEvent extends ScheduledEvent {
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("====================== Unloading ======================");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
@@ -38,7 +36,7 @@ public class QCLoadEvent extends ScheduledEvent {
 		if(!handler.isTimeOut()) {
 			handler.reschedule();
 		} else {
-			crane.pick();
+			crane.load();
 			crane.setStatus(Crane.OCCUPIED);
 			ship.setNoOfContainer(ship.getNoOfContainer() - 1);
 			Lane lane = ((UnloadingSimulation)simulation).getState().getlaneArray().get(0);

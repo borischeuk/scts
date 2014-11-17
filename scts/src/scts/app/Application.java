@@ -30,6 +30,7 @@ public class Application {
 		
 		frame.setVisible(true);
 		
+		//Reset the configuration text file "currentConfig".
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {
 				Configuration configuration = new Configuration();

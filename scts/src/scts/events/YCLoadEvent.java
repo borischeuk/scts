@@ -24,8 +24,6 @@ public class YCLoadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("=============YC Loading============");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		

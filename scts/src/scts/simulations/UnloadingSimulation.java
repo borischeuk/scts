@@ -1,5 +1,6 @@
 package scts.simulations;
 
+import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,6 +31,7 @@ import simulation.utils.RandomFactory;
  */
 public class UnloadingSimulation extends Simulation{
 	
+	//List of status
 	public static final int RUNNING = 0;
 	public static final int STOP = 2;
 	public static final int PAUSE = 3;
@@ -43,15 +45,16 @@ public class UnloadingSimulation extends Simulation{
 	
 	public UnloadingSimulation() {
 		super();
-		state = new SimulationState();
+		
 		if(instance == null)
 			instance = this;
+		
+		state = new SimulationState();
 		status = STOP;
 		configValues = new ConfigValues();
 		simulationSpeed = configValues.getSimulationSpeed();
 		stats = new Stats();
-		
-		//this.schedule( new ScheduledEvent(new ShipGeneration(), 0) );
+
 		this.schedule(new InitializationEvent(0));
 		
 	}
@@ -61,20 +64,14 @@ public class UnloadingSimulation extends Simulation{
 		
 		ScheduledEvent currentEvent;
 		
-		//System.out.println("GlobalState address ============ " + state);
-		this.update();
-		
 		while(!scheduleQueue.isEmpty() && !stop) {
-			
-			/*System.out.println("Global start time ==================== " + this.startTime);
-			System.out.println("Simulation address ===================== " + this);
-			System.out.println("Event Queue Size =============== " + scheduleQueue.size());*/
 			
 			currentEvent = scheduleQueue.poll();
 			currentEvent.execute(this);
 			
 			if(checkStop()) {
 				this.stop();
+				this.setStatus(STOP);
 				continue;
 			}
 			
@@ -87,7 +84,6 @@ public class UnloadingSimulation extends Simulation{
 				if(state.getShipQueue().peek().getStatus() == Ship.WAITING) {
 					int minTime = configValues.getDockMinTime();
 					int maxTime = configValues.getDockMaxTime();
-					//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 					long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 					this.schedule( new ShipDockEvent(state.getShipQueue().peek(), duration) );
 				}
@@ -98,7 +94,6 @@ public class UnloadingSimulation extends Simulation{
 						if(crane.getStatus() == Crane.IDLE && state.getShipQueue().peek().getNoOfContainer() > 0) {
 							int minTime = configValues.getqcRemoveMinTime();
 							int maxTime = configValues.getqcRemoveMaxTime();
-							//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 							long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 							crane.setStatus(Crane.LOADING);
 							this.schedule(new QCLoadEvent(state.getShipQueue().peek(), crane, duration));
@@ -116,7 +111,6 @@ public class UnloadingSimulation extends Simulation{
 							
 							int minTime = configValues.getyvPickMinTime();
 							int maxTime = configValues.getyvPickMaxTime();
-							//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 							long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 							this.schedule(new YVPickEvent(lane, vehiclePolled, duration));
 						}
@@ -126,16 +120,12 @@ public class UnloadingSimulation extends Simulation{
 				
 				//Operation of sea side transfer point
 				for(ContainerStack containerStack : state.getStackArray()) {
-					//System.out.println("Stack Queue size ======================== " + state.getVehicleStackQueue().size());
-					//System.out.println("Transfer Point Status ========================= " + containerStack.getTransferPt().getStatus());
 					if( (!state.getVehicleStackQueue().isEmpty()) && (containerStack.getTransferPt().getStatus() == SSTransferPt.FREE)) {
-						//System.out.println("============Waiting at Stack============");
 						containerStack.getTransferPt().setStatus(SSTransferPt.LOADING);
 						YardVehicle vehiclePolled = state.getVehicleStackQueue().poll();
 						
 						int minTime = configValues.getyvDropMinTime();
 						int maxTime = configValues.getyvDropMaxTime();
-						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YVUnloadEvent(vehiclePolled, containerStack.getTransferPt(), duration));
 					}
@@ -148,16 +138,13 @@ public class UnloadingSimulation extends Simulation{
 						
 						int minTime = configValues.getqcRemoveMinTime();
 						int maxTime = configValues.getqcRemoveMaxTime();
-						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YCLoadEvent(containerStack, duration));
 					} else if (containerStack.getYardCrane().getStatus() == Crane.OCCUPIED) {
-						//containerStack.getYardCrane().setStatus(Crane.IDLE);
 						containerStack.getYardCrane().setStatus(Crane.SETTINGDOWN);
 						
 						int minTime = configValues.getqcPlaceMinTime();
 						int maxTime = configValues.getqcPlaceMaxTime();
-						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YCUnloadEvent(containerStack, duration));
 					}
@@ -170,7 +157,6 @@ public class UnloadingSimulation extends Simulation{
 					
 					int minTime = configValues.getUndockMinTime();
 					int maxTime = configValues.getUndockMaxTime();
-					//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 					long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 					this.schedule(new ShipUndockEvent(ship, duration));
 				}
@@ -187,12 +173,9 @@ public class UnloadingSimulation extends Simulation{
 	@Override
 	public void stop() {
 		super.stop();
-		this.setStatus(STOP);
-		LivePanel.getInstance().stopTimer();
 	}
 	
 	public void resume() {
-		LivePanel.getInstance().startTimer();
 		this.stop = false;
 		this.run();
 	}
@@ -214,17 +197,22 @@ public class UnloadingSimulation extends Simulation{
 		this.schedule(new InitializationEvent(0));
 	}
 	
+	//This function adjusts the current time of the simulation.
 	public void adjustSimulationTime() {
 		Date currentDate = Calendar.getInstance().getTime();
 		long timeDiff = currentDate.getTime() - this.getStartTime().getTime();
 		this.currentTime = timeDiff * simulationSpeed;
 	}
 	
+	//This function checks whether the simulations have to stop.
 	public boolean checkStop() {
 		if(this.getState().getShipQueue().isEmpty() && this.stop == false)
 			return true;
 		return false;
 	}
+	
+	
+	//Getters and Setters
 	
 	public static UnloadingSimulation getInstance() {
 		return instance;
@@ -246,8 +234,16 @@ public class UnloadingSimulation extends Simulation{
 		return stats;
 	}
 	
+	public ArrayDeque<ScheduledEvent> getScheduleQueue() {
+		return this.scheduleQueue;
+	}
+	
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 	
 }

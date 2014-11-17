@@ -25,8 +25,6 @@ public class QCSetDownEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("============ Setting Down ===============");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		

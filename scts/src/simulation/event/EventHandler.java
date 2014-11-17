@@ -24,11 +24,11 @@ public class EventHandler {
 		eventTimeOfOccurance = timeDiff;
 		event.setTimeOfOccurance(eventTimeOfOccurance);
 		
-		//Used for debugging
-		System.out.println("Current Time ================== " + Calendar.getInstance().getTime());
+		//For debugging
+		/*System.out.println("Current Time ================== " + Calendar.getInstance().getTime());
 		System.out.println("Event start time ================== " + eventStartTime);
 		System.out.println("Event duration ======================== " + event.getDuration());
-		System.out.println("Time Difference ================== " + timeDiff);
+		System.out.println("Time Difference ================== " + timeDiff);*/
 
 	}
 	

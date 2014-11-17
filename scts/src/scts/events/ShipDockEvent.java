@@ -24,8 +24,6 @@ public class ShipDockEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("=============== Docking ================");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		

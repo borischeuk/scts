@@ -23,8 +23,6 @@ public class YCUnloadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("=============YC Unloading============");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		

@@ -16,16 +16,20 @@ public class Crane {
 		status = IDLE;
 	}
 	
-	public void pick() {
+	public void load() {
 		occupied = true;
 	}
 	
-	public void setDown() {
-		occupied = false;
-	}
+	//Get values
 	
 	public int getStatus() {
 		return status;
+	}
+	
+	//Set values
+	
+	public void setDown() {
+		occupied = false;
 	}
 	
 	public void setStatus(int status) {

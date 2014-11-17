@@ -24,8 +24,6 @@ public class YVToQuayEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("======================== YV Going to quay =========================");
-		
 		EventHandler handler = new EventHandler(simulation, this);
 		
 		if(this.getStartTime() == null)
