@@ -12,7 +12,7 @@ public abstract class ScheduledEvent implements BaseEvent, Comparable<ScheduledE
 	protected long duration;
 	protected long timeOfOccurance;
 	
-	public ScheduledEvent(int duration) {
+	public ScheduledEvent(long duration) {
 		this.duration = duration;
 		this.timeOfOccurance = 0;
 		this.startTime = null;

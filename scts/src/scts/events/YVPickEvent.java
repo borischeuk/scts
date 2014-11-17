@@ -20,7 +20,7 @@ public class YVPickEvent extends ScheduledEvent{
 	YardVehicle vehicle;
 	Lane lane;
 	
-	public YVPickEvent(Lane lane, YardVehicle vehicle, int duration) {
+	public YVPickEvent(Lane lane, YardVehicle vehicle, long duration) {
 		super(duration);
 		this.lane = lane;
 		this.vehicle = vehicle;
@@ -53,12 +53,13 @@ public class YVPickEvent extends ScheduledEvent{
 			int minTime = configValues.getyvTravelToSeaSideMinTime();
 			int maxTime = configValues.getyvTravelToSeaSideMaxTime();
 			int simulationSpeed = configValues.getSimulationSpeed();
-			int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+			//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+			long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 			simulation.schedule(new YVToStackEvent(vehicle, duration));
 			
 			//Update the statistics of the simulation.
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double pickingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			double pickingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 1000 / 60;
 			stats.setYardVehicleTimeSpentInQA(stats.getYardVehicleTimeSpentInQA() + pickingTime);
 			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + pickingTime);
 		}

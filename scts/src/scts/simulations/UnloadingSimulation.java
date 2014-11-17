@@ -87,7 +87,8 @@ public class UnloadingSimulation extends Simulation{
 				if(state.getShipQueue().peek().getStatus() == Ship.WAITING) {
 					int minTime = configValues.getDockMinTime();
 					int maxTime = configValues.getDockMaxTime();
-					int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+					//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+					long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 					this.schedule( new ShipDockEvent(state.getShipQueue().peek(), duration) );
 				}
 				
@@ -97,7 +98,8 @@ public class UnloadingSimulation extends Simulation{
 						if(crane.getStatus() == Crane.IDLE && state.getShipQueue().peek().getNoOfContainer() > 0) {
 							int minTime = configValues.getqcRemoveMinTime();
 							int maxTime = configValues.getqcRemoveMaxTime();
-							int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+							//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+							long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 							crane.setStatus(Crane.LOADING);
 							this.schedule(new QCLoadEvent(state.getShipQueue().peek(), crane, duration));
 						}
@@ -114,7 +116,8 @@ public class UnloadingSimulation extends Simulation{
 							
 							int minTime = configValues.getyvPickMinTime();
 							int maxTime = configValues.getyvPickMaxTime();
-							int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+							//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+							long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 							this.schedule(new YVPickEvent(lane, vehiclePolled, duration));
 						}
 					
@@ -132,7 +135,8 @@ public class UnloadingSimulation extends Simulation{
 						
 						int minTime = configValues.getyvDropMinTime();
 						int maxTime = configValues.getyvDropMaxTime();
-						int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YVUnloadEvent(vehiclePolled, containerStack.getTransferPt(), duration));
 					}
 				}
@@ -144,7 +148,8 @@ public class UnloadingSimulation extends Simulation{
 						
 						int minTime = configValues.getqcRemoveMinTime();
 						int maxTime = configValues.getqcRemoveMaxTime();
-						int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YCLoadEvent(containerStack, duration));
 					} else if (containerStack.getYardCrane().getStatus() == Crane.OCCUPIED) {
 						//containerStack.getYardCrane().setStatus(Crane.IDLE);
@@ -152,7 +157,8 @@ public class UnloadingSimulation extends Simulation{
 						
 						int minTime = configValues.getqcPlaceMinTime();
 						int maxTime = configValues.getqcPlaceMaxTime();
-						int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+						long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 						this.schedule(new YCUnloadEvent(containerStack, duration));
 					}
 				}
@@ -164,8 +170,9 @@ public class UnloadingSimulation extends Simulation{
 					
 					int minTime = configValues.getUndockMinTime();
 					int maxTime = configValues.getUndockMaxTime();
-					int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
-					this.schedule(new ShipUndockEvent(ship, 3));
+					//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+					long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
+					this.schedule(new ShipUndockEvent(ship, duration));
 				}
 				
 			}
@@ -209,7 +216,7 @@ public class UnloadingSimulation extends Simulation{
 	
 	public void adjustSimulationTime() {
 		Date currentDate = Calendar.getInstance().getTime();
-		long timeDiff = ( currentDate.getTime() - this.getStartTime().getTime() ) / 1000;
+		long timeDiff = currentDate.getTime() - this.getStartTime().getTime();
 		this.currentTime = timeDiff * simulationSpeed;
 	}
 	

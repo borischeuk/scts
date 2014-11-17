@@ -16,7 +16,7 @@ public class QCSetDownEvent extends ScheduledEvent{
 	Crane crane;
 	Lane lane;
 	
-	public QCSetDownEvent(Crane crane, Lane lane, int duration) {
+	public QCSetDownEvent(Crane crane, Lane lane, long duration) {
 		super(duration);
 		this.crane = crane;
 		this.lane = lane;

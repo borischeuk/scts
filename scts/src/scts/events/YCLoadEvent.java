@@ -16,7 +16,7 @@ public class YCLoadEvent extends ScheduledEvent{
 
 	ContainerStack containerStack;
 	
-	public YCLoadEvent(ContainerStack containerStack, int duration) {
+	public YCLoadEvent(ContainerStack containerStack, long duration) {
 		super(duration);
 		this.containerStack = containerStack;
 	}

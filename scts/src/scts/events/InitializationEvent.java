@@ -31,7 +31,8 @@ public class InitializationEvent extends ScheduledEvent {
 		Ship ship = new Ship();
 		int minNum = configValues.getMinContainers();
 		int maxNum = configValues.getMaxContainers();
-		ship.setNoOfContainer(RandomFactory.randInt(minNum, maxNum));
+		//ship.setNoOfContainer(RandomFactory.randInt(minNum, maxNum));
+		ship.setNoOfContainer(10);
 		state.getShipQueue().add(ship);
 		
 		Crane quayCrane = new Crane();

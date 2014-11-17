@@ -19,7 +19,7 @@ public class QCLoadEvent extends ScheduledEvent {
 	private Ship ship;
 	private Crane crane;
 	
-	public QCLoadEvent(Ship ship, Crane crane, int duration) {
+	public QCLoadEvent(Ship ship, Crane crane, long duration) {
 		super(duration);
 		this.ship = ship;
 		this.crane = crane;
@@ -46,7 +46,7 @@ public class QCLoadEvent extends ScheduledEvent {
 			
 			//Update the statistics of the simulation.
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double unloadTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 60;
+			double unloadTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 1000 / 60;
 			stats.setQuayCraneUnloadTime(stats.getQuayCraneUnloadTime() + unloadTime);
 		}
 		

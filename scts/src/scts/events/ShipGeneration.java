@@ -19,7 +19,7 @@ public class ShipGeneration extends ScheduledEvent{
 	private int noOfShipArrive;
 	private ArrayList<Integer> priorityArray;
 	
-	public ShipGeneration(int duration) {
+	public ShipGeneration(long duration) {
 		super(duration);
 	}
 	
