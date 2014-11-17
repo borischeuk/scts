@@ -1,8 +1,6 @@
 package scts.ui;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,20 +9,26 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import scts.app.Configuration;
-import scts.domain.*;
-import scts.ui.*;
+import scts.simulations.Stats;
+import scts.simulations.UnloadingSimulation;
+import simulation.simulation.Simulation;
 
 public class MonitorPanel extends JPanel{
 	
+	private static MonitorPanel instance;
+	private Simulation simulation;
+	
 	private JButton configBtn;
 	private JButton reportBtn;
-	private JButton quitBtn;
 	private Stats stats;
 	
-	public MonitorPanel() {
+	public MonitorPanel(Simulation simulation) {
 		
-		//super(new FlowLayout());
+		if(instance == null)
+			instance = this;
+		
+		this.simulation = simulation;
+		this.stats = ((UnloadingSimulation)simulation).getStats();
 		
 		JPanel panel = new JPanel();
 		LayoutManager layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
@@ -33,11 +37,9 @@ public class MonitorPanel extends JPanel{
 		
 		configBtn = new JButton("Configuration");
 		reportBtn = new JButton("Operation Report");
-		quitBtn = new JButton("Quit");
 		
 		panel.add(configBtn);
 		panel.add(reportBtn);
-		panel.add(quitBtn);
 		
 		this.add(panel);
 		this.setBackground(Color.BLACK);
@@ -45,7 +47,6 @@ public class MonitorPanel extends JPanel{
 		reportBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				stats = new Stats();
 				new ReportPanel(stats);
 			}
 		});
@@ -57,6 +58,14 @@ public class MonitorPanel extends JPanel{
 			}
 		});
 		
+	}
+	
+	public static MonitorPanel getInstance() {
+		return instance;
+	}
+	
+	public void initialize() {
+		this.stats = ((UnloadingSimulation)simulation).getStats();
 	}
 
 }

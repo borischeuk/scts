@@ -1,237 +1,211 @@
 package scts.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import scts.domain.ConfigValues;
-import scts.domain.ContainerStack;
-import scts.domain.Crane;
 import scts.domain.Ship;
-import scts.domain.Stats;
 import scts.domain.YardVehicle;
-import scts.simulations.UnloadingSimulation;
 import scts.simulations.SimulationState;
-import scts.ui.view.*;
+import scts.simulations.UnloadingSimulation;
+import scts.ui.view.QuayCraneView;
+import scts.ui.view.ShipView;
+import scts.ui.view.StackView;
+import scts.ui.view.YardVehicleView;
 import simulation.simulation.Simulation;
 
-public class LivePanel extends JPanel {
+public class LivePanel extends JPanel{
 	
-	private LivePanel instance;
-	private Thread thread;
-	private Timer timer;
+	private static LivePanel instance;
 	
 	private Simulation simulation;
 	private SimulationState state;
+	private Timer timer;
 	
-	private YardVehicleView yardVehicle = new YardVehicleView();
-	private ShipView ship = new ShipView();
-	private QuayCraneView quayCrane = new QuayCraneView();
-	private StackView stack = new StackView();
-	private TruckView truck = new TruckView();
-	private JLabel numShipWaiting;
-	private JLabel numYV;
-	private JLabel numQC;
-	private JLabel QCStatus;
-	private JLabel laneStatus;
-	private JLabel seasideStatus;
-	private JLabel landsideStatus;
-	private ConfigValues values;
-	private int x;
-	private int y;
-	
+	private ShipView shipView;
+	private QuayCraneView craneView;
+	private StackView stackView;
+	private YardVehicleView yardVehicleView;
+	private String numShipWait;
+	private String numShipContainer;
+	private String numStackContainer;
+	private String QCStatus;
+	private String laneStatus;
+	private String SSTransferPtStatus;
+	private String clock;
+
 	public LivePanel(Simulation simulation) {
-		//super();
-		
-		x = 100;
-		y = 100;
-		
 		if(instance == null)
 			instance = this;
-		
-		thread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						thread.sleep(2000);
-					} catch (InterruptedException e) {
-					}
-					update();
-				}
-			}
-			
-		});
-		
-		timer = new Timer(2000, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				update();
-			}
-			
-		});
-		
 		this.simulation = simulation;
 		this.state = ((UnloadingSimulation)simulation).getState();
-		
-		values = new ConfigValues();
-		
-		numShipWaiting = new JLabel("Number of ships waiting: " + values.getNumShipsWaiting());
-		numShipWaiting.setBounds(10, 100, numShipWaiting.getPreferredSize().width, numShipWaiting.getPreferredSize().height);
-		
-		numQC = new JLabel("Number of Quay Cranes: " + values.getNumQC());
-		numQC.setBounds(10, 180, numQC.getPreferredSize().width, numQC.getPreferredSize().height);
-		
-		numYV = new JLabel("Number of Yard Vehicles: " + values.getNumYV());
-		numYV.setBounds(10, 350, numYV.getPreferredSize().width, numYV.getPreferredSize().height);
-		
-		QCStatus = new JLabel("Quay Crane Status: ");
-		QCStatus.setBounds(450, 100, QCStatus.getPreferredSize().width, QCStatus.getPreferredSize().height);
-		
-		laneStatus = new JLabel("Lane Status: ");
-		laneStatus.setBounds(450, 200, laneStatus.getPreferredSize().width, laneStatus.getPreferredSize().height);
-		
-		seasideStatus = new JLabel("Seaside Trnasfer Point Status: ");
-		seasideStatus.setBounds(500, 370, seasideStatus.getPreferredSize().width, seasideStatus.getPreferredSize().height);
-		
-		landsideStatus = new JLabel("Landside Transfer Point Status: ");
-		landsideStatus.setBounds(500, 500, landsideStatus.getPreferredSize().width, landsideStatus.getPreferredSize().height);
-		
-		this.setLayout(null);
-		this.add(numShipWaiting);
-		this.add(numQC);
-		this.add(numYV);
-		this.add(QCStatus);
-		this.add(laneStatus);
-		this.add(seasideStatus);
-		this.add(landsideStatus);
-		this.add(quayCrane);
-		this.add(yardVehicle);
-		this.add(ship);
-		this.add(stack);
-		this.add(truck);
-		this.validate();
-		this.setVisible(true);
-		
-		JButton b1 = new JButton("Move");
-		this.add(b1);
-        Dimension size = b1.getPreferredSize();
-        b1.setBounds(25, 25,
-                     size.width, size.height);
-		b1.addActionListener(new ActionListener() {
+		//System.out.println("2 State ============== " + state);
+		//System.out.println("2 Get State ============== " + ((UnloadingSimulation)simulation).getState());
+		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				ship.move();
-				yardVehicle.moveRight();
-				repaint();
+				update(LivePanel.getInstance().getGraphics());
+				paint(LivePanel.getInstance().getGraphics());
 			}
+			
 		});
 		
+		shipView = new ShipView();
+		craneView = new QuayCraneView();
+		stackView = new StackView();
+		yardVehicleView = new YardVehicleView();
+		numShipWait = new String("Number of ships wait: ");
+		numShipContainer = new String("Number of containers on ship: ");
+		numStackContainer = new String("Number of containers in stack: ");
+		QCStatus = new String("Status of quay crane: ");
+		laneStatus = new String("Status of lane: ");
+		SSTransferPtStatus = new String("Status of Seaside Transfer Point: ");
+		clock = new String("00:00");
+		
+		this.setBackground(Color.WHITE);
 	}
 	
-	public LivePanel getInstance() {
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.drawImage(shipView.getImage(), shipView.getX(), shipView.getY(), null);
+		g.drawImage(craneView.getImage(), craneView.getX(), craneView.getY(), null);
+		g.drawImage(stackView.getImage(), stackView.getX(), stackView.getY(), null);
+		g.drawImage(yardVehicleView.getImage(), yardVehicleView.getX(), yardVehicleView.getY(), null);
+		g.drawString(numShipWait, 10, 525);
+		g.drawString(numShipContainer, 10, 540);
+		g.drawString(numStackContainer, 10, 555);
+		g.drawString(QCStatus, 10, 570);
+		g.drawString(laneStatus, 10, 585);
+		g.drawString(SSTransferPtStatus, 10, 600);
+		
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+		g.drawString(clock, 750, 600);
+		
+		if(((UnloadingSimulation)simulation).getStatus() == UnloadingSimulation.RUNNING) {
+			//System.out.println("Running");
+			shipMove();
+			vehicleMove();
+			numShipWait = "Number of ships wait: " + (state.getShipQueue().size() - 1);
+			if(state.getShipQueue().peek() != null) {
+				numShipContainer = "Number of containers on ship: " + state.getShipQueue().peek().getNoOfContainer();
+			} else {
+				numShipContainer = "Number of containers on ship: " + 0;
+			}
+			numStackContainer = "Number of containers in stack: " + state.getStackArray().get(0).getNoOfContainer();
+			QCStatus = "Status of quay crane: " + state.getQCArray().get(0).getStatus();
+			laneStatus = "Status of lane: " + state.getlaneArray().get(0).getStatus();
+			SSTransferPtStatus = "Status of seaside transfer point: " + state.getStackArray().get(0).getTransferPt().getStatus();
+			clock = calSimTime();
+		}
+	}
+	
+	public void initialize() {
+		this.state = UnloadingSimulation.getInstance().getState();
+	}
+	
+	public void startTimer() {
+		timer.start();
+	}
+	
+	public void stopTimer() {
+		timer.stop();
+	}
+	
+	private String calSimTime() {
+		long currentTime = simulation.getCurrentTime();
+		long mins = currentTime / 60;
+		long sec = currentTime % 60;
+		return "" + mins + ":" + sec;
+	}
+	
+	private void shipMove() {
+		//System.out.println("State address ================ " + state);
+		Ship shipInBerth = null;
+		if(!state.getShipQueue().isEmpty()) {
+			//System.out.println("Ship Move");
+			shipInBerth = state.getShipQueue().peek();
+		}
+		if(shipInBerth != null) {
+			
+			Point shipInitPos = new Point(10, 10);
+			Point shipDockPos = new Point((this.getSize().width/4), 10);
+			//Point shipWaitPos = new Point((this.getSize().width/2), 10);
+			Point shipWaitPos = new Point(340, 10);
+			Point shipUndockPos = new Point((this.getSize().width/4)*3, 10);
+			Point shipLastPos = new Point((this.getSize().width), 10);
+			Point newPos = shipInitPos;
+			
+			//System.out.println("Ship Status ================ " + shipInBerth.getStatus());
+			int currentX = shipView.getX();
+			int currentY = shipView.getY();
+			if(shipInBerth.getStatus() == Ship.DOCKING) {
+				if(currentX == shipInitPos.x && currentY == shipInitPos.y) newPos = shipDockPos;
+				else if(currentX == shipDockPos.x && currentY == shipDockPos.y) newPos = shipWaitPos;
+				else if(currentX == shipWaitPos.x && currentY == shipWaitPos.y) newPos = shipInitPos;
+			} else if(shipInBerth.getStatus() == Ship.UNDOCKING) {
+				if(currentX == shipWaitPos.x && currentY == shipWaitPos.y) newPos = shipUndockPos;
+				else if(currentX == shipUndockPos.x && currentY == shipUndockPos.y) newPos = shipLastPos;
+				else if(currentX == shipLastPos.x && currentY == shipLastPos.y) newPos = shipWaitPos;
+			} else {
+				newPos = shipWaitPos;
+			}
+			
+			shipView.setPosition(newPos.x, newPos.y);
+		}
+	}
+	
+	private void vehicleMove() {
+		Point vehicleQuayPos = new Point(410, 140);
+		Point vehicleMidPos = new Point(410, 240);
+		Point vehicleStackPos = new Point(410, 340);
+		Point newPos = vehicleQuayPos;
+		
+		YardVehicle yardVehicle = null;
+		if(state.getVehicleAtLane() != null) {
+			yardVehicle = state.getVehicleAtLane();
+			if(yardVehicle != null) newPos = vehicleQuayPos;
+		}
+		else if(state.getVehicleAtTPt() != null) {
+			yardVehicle = state.getVehicleAtTPt();
+			if(yardVehicle != null) newPos = vehicleStackPos;
+		}
+		else if(state.getVehicleToQuayQueue() != null) {
+			if (!state.getVehicleToQuayQueue().isEmpty()) {
+				System.out.println("null null null");
+				yardVehicle = state.getVehicleToQuayQueue().get(0);
+				if(yardVehicle != null) {
+					int currentX = yardVehicleView.getX();
+					int currentY = yardVehicleView.getY();
+					if(currentX == vehicleStackPos.x && currentY == vehicleStackPos.y) newPos = vehicleMidPos;
+					else if(currentX == vehicleMidPos.x && currentY == vehicleMidPos.y) newPos = vehicleQuayPos;
+					else if(currentX == vehicleQuayPos.x && currentY == vehicleQuayPos.y) newPos = vehicleStackPos;
+				}
+			}
+		}
+		else if(!state.getVehicleToStackQueue().isEmpty()) {
+			yardVehicle = state.getVehicleToStackQueue().get(0);
+			if(yardVehicle != null) {
+				int currentX = yardVehicleView.getX();
+				int currentY = yardVehicleView.getY();
+				if(currentX == vehicleQuayPos.x && currentY == vehicleQuayPos.y) newPos = vehicleMidPos;
+				else if(currentX == vehicleMidPos.x && currentY == vehicleMidPos.y) newPos = vehicleStackPos;
+				else if(currentX == vehicleStackPos.x && currentY == vehicleStackPos.y) newPos = vehicleQuayPos;
+			}
+		}
+		
+		yardVehicleView.setPosition(newPos.x, newPos.y);
+	}
+
+	public static LivePanel getInstance() {
 		return instance;
 	}
 	
-	//Get information of the simulation and update the ui
-	public void update() {
-		//The ship in the berth
-		Ship shipInBerth = new Ship();
-		if(!state.getShipQueue().isEmpty())
-			shipInBerth = state.getShipQueue().peek();
-		//The crane used in this simulation
-		Crane crane = new Crane();
-		if(!state.getQCArray().isEmpty())
-			crane = state.getQCArray().get(0);
-		//The vehicle in different positions
-		/*YardVehicle laneVehicle = state.getVehicleAtLane();
-		YardVehicle tPtVehicle = state.getVehicleAtTPt();
-		YardVehicle vehicleToStack = state.getVehicleToStackQueue().get(0);
-		YardVehicle vehicleToQuay = state.getVehicleToQuayQueue().get(0);*/
-		//The stack used in this simulation
-		
-		ContainerStack containerStack;
-		if(!state.getStackArray().isEmpty())
-			containerStack = state.getStackArray().get(0);
-		
-		ship.move();
-		
-		System.out.println("==============Test===========");
-		
-		Point shipInitPos = new Point(10, 10);
-		Point shipDockPos = new Point((this.getSize().width/4), 10);
-		Point shipWaitPos = new Point((this.getSize().width/2), 10);
-		Point shipUndockPos = new Point((this.getSize().width/4)*3, 10);
-		Point shipLastPos = new Point((this.getSize().width), 10);
-		
-		if(shipInBerth.getStatus() == Ship.DOCKING) {
-			
-			Point newPos = new Point();
-			if(ship.getLocation().equals(shipInitPos)) newPos = shipDockPos;
-			if(ship.getLocation().equals(shipDockPos)) newPos = shipWaitPos;
-			if(ship.getLocation().equals(shipWaitPos)) newPos = shipInitPos;
-			ship.move(newPos.x, newPos.y);
-		} else if (shipInBerth.getStatus() == Ship.UNDOCKING) {
-			Point newPos = new Point();
-			if(ship.getLocation().equals(shipWaitPos)) newPos = shipUndockPos;
-			if(ship.getLocation().equals(shipUndockPos)) newPos = shipLastPos;
-			if(ship.getLocation().equals(shipLastPos)) newPos = shipWaitPos;
-			ship.move(newPos.x, newPos.y);
-		} else {
-			ship.move(shipWaitPos.x, shipWaitPos.y);
-		}
-		
-		Point vehicleInitPos = new Point(10, 10);
-		Point vehicleToStackPos = new Point((this.getSize().width/4), 10);
-		Point vehicleMidPos = new Point((this.getSize().width/2), 10);
-		Point vehicleToQuayPos = new Point((this.getSize().width/4)*3, 10);
-		Point vehicleLastPos = new Point((this.getSize().width), 10);
-		
-		numShipWaiting.setText("Number of ships waiting: " + state.getShipQueue().size());
-		numQC.setText("Number of Quay Cranes: " + state.getQCArray().size());
-		String qcStatus = "";
-		if(crane.getStatus() == Crane.IDLE) qcStatus = "IDLE";
-		else if(crane.getStatus() == Crane.LOADING) qcStatus = "Loading";
-		else if(crane.getStatus() == Crane.OCCUPIED) qcStatus = "Occupied";
-		else qcStatus = "Unloading";
-		QCStatus.setText("Quay Crane Status: " + qcStatus);
-		
-		revalidate();
-		repaint();
-		
-	}
-	
-	/*public void update() {
-		
-		System.out.println("========Test=========");
-		
-		JLabel testLabel = new JLabel("Test Test Test");
-		testLabel.setLocation(new Point(x+10, y+10));
-		
-		//this.invalidate();
-		//this.paint(this.getGraphics());
-		repaint(1000);
-	}*/
-	
-	public void threadUpdate() {
-		thread.start();
-	}
-	
-	public void timerUpdate() {
-		timer.start();
-	}
 }

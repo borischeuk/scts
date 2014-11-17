@@ -1,5 +1,10 @@
-package scts.domain;
+package scts.simulations;
 
+/**
+ * 
+ * This class stores the values used by the report of the simulation.
+ *
+ */
 public class Stats {
 	private int totalShips;
 	private int totalContainers;
@@ -86,6 +91,10 @@ public class Stats {
 	
 	public void setShipServiceTime(double time) {
 		this.shipServiceTime = time;
+	}
+	
+	public void setQuayCraneUnloadTime(double time) {
+		this.quayCraneUnloadTime = time;
 	}
 	
 	public void setLongestShipQueue(int longestShipQueue) {

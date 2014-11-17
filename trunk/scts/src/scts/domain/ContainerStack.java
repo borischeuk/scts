@@ -1,7 +1,5 @@
 package scts.domain;
 
-import java.util.Stack;
-
 public class ContainerStack {
 
 	private Crane yardCrane;
@@ -14,6 +12,22 @@ public class ContainerStack {
 		transferPt = new SSTransferPt();
 		noOfContainer = 0;
 	}
+	
+	public boolean isEmpty() {
+		if(noOfContainer == 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean isFull() {
+		if(noOfContainer == size)
+			return true;
+		else
+			return false;
+	}
+	
+	//Get value
 	
 	public Crane getYardCrane() {
 		return yardCrane;
@@ -31,6 +45,8 @@ public class ContainerStack {
 		return size;
 	}
 	
+	//Set values
+	
 	public void setYardCrane(Crane crane) {
 		this.yardCrane = crane;
 	}
@@ -45,20 +61,6 @@ public class ContainerStack {
 	
 	public void setSize(int size) {
 		this.size = size;
-	}
-	
-	public boolean isEmpty() {
-		if(noOfContainer == 0)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean isFull() {
-		if(noOfContainer == size)
-			return true;
-		else
-			return false;
 	}
 	
 }

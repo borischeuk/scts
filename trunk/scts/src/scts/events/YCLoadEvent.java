@@ -7,6 +7,11 @@ import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class represents yard crane loads a container from a seaside transfer point.
+ *
+ */
 public class YCLoadEvent extends ScheduledEvent{
 
 	ContainerStack containerStack;
@@ -19,14 +24,14 @@ public class YCLoadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		EventHandler handler = new EventHandler(simulation, this);
+		System.out.println("=============YC Loading============");
 		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
+		EventHandler handler = new EventHandler(simulation, this);
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			containerStack.getTransferPt().setStatus(SSTransferPt.FREE);

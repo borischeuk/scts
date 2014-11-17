@@ -3,6 +3,7 @@ package scts.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -10,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import scts.app.ReportGeneration;
-import scts.domain.Stats;
+import scts.simulations.Stats;
+import simulation.utils.ReportGeneration;
 
 public class ReportPanel{
 	
@@ -43,28 +44,30 @@ public class ReportPanel{
 		title = new JLabel("Operational Statistics", JLabel.CENTER);
 		panel.add(title);
 		
+		DecimalFormat df = new DecimalFormat("#.00");
+		
 		totalShips = new JLabel("Total Number of Ships Unloaded: " + stats.getTotalShips());
 		panel.add(totalShips);
 		
 		totalContainers = new JLabel("Total Number of Containers Transferred: " + stats.getTotalContainers());
 		panel.add(totalContainers);
 		
-		shipServiceTime = new JLabel("Service Time Experienced by the Ship: " + stats.getShipServiceTime());
+		shipServiceTime = new JLabel("Service Time Experienced by the Ship: " + stats.getShipServiceTime() + " mins");
 		panel.add(shipServiceTime);
 		
-		quayCraneUnloadTime= new JLabel("Service Time of Quay Crane: " + stats.getQuayCraneUnloadTime());
+		quayCraneUnloadTime= new JLabel("Service Time of Quay Crane: " + stats.getQuayCraneUnloadTime() + " mins");
 		panel.add(quayCraneUnloadTime);
 		
 		longestShipQueue = new JLabel("Largest Number of Ships Waiting for Unloading: " + stats.getLongestShipQueue());
-		panel.add(longestShipQueue);
+		//panel.add(longestShipQueue);
 		
 		maxRoadVehicleQueue = new JLabel("Maximum Length of Road Vehicle Queue: " + stats.getMaxRoadVehicleQueue());
-		panel.add(maxRoadVehicleQueue);
+		//panel.add(maxRoadVehicleQueue);
 		
-		yardVehiclePercentageTimeSpentInQA = new JLabel("Percentage of Time Spent by Yard Vehicles In Quay Area: " + stats.getYardVehiclePercentageTimeSpentInQA() + "%");
+		yardVehiclePercentageTimeSpentInQA = new JLabel("Percentage of Time Spent by Yard Vehicles In Quay Area: " + df.format(stats.getYardVehiclePercentageTimeSpentInQA()) + "%");
 		panel.add(yardVehiclePercentageTimeSpentInQA);
 		
-		yardVehiclePercentageTimeSpentInSeaside = new JLabel("Percentage of Time Spent by Yard Vehicles In Seaside Transfer Point: " + stats.getYardVehiclePercentageTimeSpentInSeaside() + "%");
+		yardVehiclePercentageTimeSpentInSeaside = new JLabel("Percentage of Time Spent by Yard Vehicles In Seaside Transfer Point: " + df.format(stats.getYardVehiclePercentageTimeSpentInSeaside()) + "%");
 		panel.add(yardVehiclePercentageTimeSpentInSeaside);
 		
 		saveBtn = new JButton("Save as Text File");

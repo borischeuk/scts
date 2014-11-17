@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import scts.events.StopEvent;
-import scts.events.TestEvent;
 import scts.simulations.UnloadingSimulation;
 import simulation.simulation.Simulation;
 
@@ -55,8 +54,10 @@ public class ControlPanel extends JPanel{
 			if(((UnloadingSimulation)simulation).getStatus() == UnloadingSimulation.STOP) {
 			
 				((UnloadingSimulation)simulation).initialize();
-			
 				((UnloadingSimulation)simulation).setStatus(UnloadingSimulation.RUNNING);
+				
+				LivePanel.getInstance().initialize();
+				MonitorPanel.getInstance().initialize();
 			
 				Thread simulationThread = new Thread(new Runnable() {
 
@@ -80,9 +81,7 @@ public class ControlPanel extends JPanel{
 			System.out.println("============== Pause ==============");
 			
 			if(((UnloadingSimulation)simulation).getStatus() == UnloadingSimulation.RUNNING) {
-			
 				((UnloadingSimulation)simulation).setStatus(UnloadingSimulation.PAUSE);
-			
 				Thread thread = new Thread(new Runnable() {
 
 					@Override
@@ -107,11 +106,11 @@ public class ControlPanel extends JPanel{
 			int status = ((UnloadingSimulation)simulation).getStatus();
 			
 			if(status == UnloadingSimulation.PAUSE) {
-				System.out.println("============== Inside Pause ==============");
 				Thread thread = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
+						((UnloadingSimulation)simulation).setStatus(UnloadingSimulation.RUNNING);
 						((UnloadingSimulation)simulation).resume();
 					}
 					

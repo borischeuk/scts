@@ -1,63 +1,45 @@
 package scts.ui.view;
 
-import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 
-public class YardVehicleView extends JLabel {
-	
-	final private int initialX = 10;
-	final private int initialY = 200;
+public class YardVehicleView {
+
+	final private int initialX = 410;
+	final private int initialY = 140;
 	private int x;
 	private int y;
-	private int moveX = 1;
-	private int moveY = 1;
-	private Dimension size;
+	private Image image;
 	
 	public YardVehicleView() {
-		super();
-		ImageIcon imageicon = new ImageIcon(this.getClass().getResource("yardVehicle.png"));
-		this.setIcon(imageicon);
 		x = initialX;
 		y = initialY;
-		size = this.getPreferredSize();
-		this.setBounds(x, y, size.width, size.height);
+		try {
+			image = ImageIO.read(new File("src//scts//ui//view//yardVehicle.png"));
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 	
-	public void moveRight() {
-		x = this.getX();
-		y = this.getY();
-		moveX = 1;
-		moveY = 0;
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
+	public int getX() {
+		return x;
 	}
 	
-	public void moveDown() {
-		x = this.getX();
-		y = this.getY();
-		moveX = 0;
-		moveY = 1;
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
+	public int getY() {
+		return y;
 	}
 	
-	public void moveLeft() {
-		x = this.getX();
-		y = this.getY();
-		moveX = -1;
-		moveY = 0;
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
+	public Image getImage() {
+		return image;
+	}
+
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
-	public void moveUp() {
-		x = this.getX();
-		y = this.getY();
-		moveX = 0;
-		moveY = -1;
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
-	}
 }

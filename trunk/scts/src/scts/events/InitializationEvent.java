@@ -1,19 +1,23 @@
 package scts.events;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-
 import scts.domain.ContainerStack;
 import scts.domain.Crane;
 import scts.domain.Lane;
 import scts.domain.SSTransferPt;
 import scts.domain.Ship;
 import scts.domain.YardVehicle;
+import scts.simulations.ConfigValues;
 import scts.simulations.SimulationState;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
+import simulation.utils.RandomFactory;
 
+/**
+ * 
+ * This is the first event needed to be scheduled in order to initialize the simulation.
+ *
+ */
 public class InitializationEvent extends ScheduledEvent {
 
 	public InitializationEvent(int duration) {
@@ -22,9 +26,12 @@ public class InitializationEvent extends ScheduledEvent {
 
 	public void execute(Simulation simulation) {
 		SimulationState state = ((UnloadingSimulation)simulation).getState();
-		
+		ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
+
 		Ship ship = new Ship();
-		ship.setNoOfContainer(10);
+		int minNum = configValues.getMinContainers();
+		int maxNum = configValues.getMaxContainers();
+		ship.setNoOfContainer(RandomFactory.randInt(minNum, maxNum));
 		state.getShipQueue().add(ship);
 		
 		Crane quayCrane = new Crane();

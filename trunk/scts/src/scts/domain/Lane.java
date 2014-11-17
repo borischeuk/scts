@@ -2,6 +2,7 @@ package scts.domain;
 
 public class Lane {
 
+	//List of status
 	public static final int FREE = 0;
 	public static final int OCCUPIED = 1;
 	public static final int LOADING = 2;
@@ -30,12 +31,12 @@ public class Lane {
 		occupied = false;
 	}
 	
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	
 	public int getStatus() {
 		return status;
+	}
+	
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

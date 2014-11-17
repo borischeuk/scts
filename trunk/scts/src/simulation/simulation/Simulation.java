@@ -12,7 +12,6 @@ public class Simulation implements BaseSimulation{
 	
 	protected Date startTime;
 	protected long currentTime;
-	
 	protected boolean stop;
 
 	public Simulation() {

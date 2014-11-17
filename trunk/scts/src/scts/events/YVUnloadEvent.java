@@ -1,13 +1,20 @@
 package scts.events;
 
-import scts.domain.ConfigValues;
 import scts.domain.SSTransferPt;
 import scts.domain.YardVehicle;
+import scts.simulations.ConfigValues;
+import scts.simulations.Stats;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
+import simulation.utils.RandomFactory;
 
+/**
+ * 
+ * This class represents a yard vehicle unloads a container to a seaside transfer point.
+ *
+ */
 public class YVUnloadEvent extends ScheduledEvent{
 
 	YardVehicle vehicle;
@@ -22,31 +29,35 @@ public class YVUnloadEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		//System.out.println("================= Vehicle Unload ================");
-		
-		EventHandler handler = new EventHandler(simulation, this);
+		System.out.println("================= Vehicle Unloading ================");
 		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
 		((UnloadingSimulation)simulation).getState().setVehicleAtTPt(vehicle);
 		
+		EventHandler handler = new EventHandler(simulation, this);
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			vehicle.setStatus(YardVehicle.UNLOADING);
 			transferPt.setStatus(SSTransferPt.LOADING);
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
-			//((UnloadingSimulation)simulation).getState().getVehicleStackQueue().poll();
 			((UnloadingSimulation)simulation).getState().setVehicleAtTPt(null);
 			transferPt.setStatus(SSTransferPt.OCCUPIED);
 			
 			ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
 			int minTime = configValues.getyvTravelToQAMinTime();
 			int maxTime = configValues.getyvTravelToQAMaxTime();
-			int duration = configValues.getSimulationSpeed();
+			int simulationSpeed = configValues.getSimulationSpeed();
+			int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
 			simulation.schedule(new YVToQuayEvent(vehicle, duration));
+			
+			//Update the statistics of the simulation.
+			Stats stats = ((UnloadingSimulation)simulation).getStats();
+			double unloadingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			stats.setYardVehicleTimeSpentInSeaside(stats.getYardVehicleTimeSpentInSeaside() + unloadingTime);
+			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + unloadingTime);
 		}
 	}
 

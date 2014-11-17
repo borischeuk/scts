@@ -1,13 +1,8 @@
 package scts.simulations;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
-import scts.domain.ConfigValues;
 import scts.domain.ContainerStack;
 import scts.domain.Crane;
 import scts.domain.Lane;
@@ -15,24 +10,24 @@ import scts.domain.SSTransferPt;
 import scts.domain.Ship;
 import scts.domain.YardVehicle;
 import scts.events.ShipDockEvent;
-import scts.events.EventType;
 import scts.events.InitializationEvent;
 import scts.events.ShipUndockEvent;
 import scts.events.YCLoadEvent;
 import scts.events.YCUnloadEvent;
 import scts.events.YVPickEvent;
 import scts.events.ShipGeneration;
-import scts.events.StopEvent;
 import scts.events.QCLoadEvent;
-import scts.events.QCWaitEvent;
 import scts.events.YVUnloadEvent;
 import scts.ui.LivePanel;
-import scts.ui.LivePanel2;
-import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 import simulation.utils.RandomFactory;
 
+/**
+ * 
+ * This class is about the operation of the terminal simulation.
+ *
+ */
 public class UnloadingSimulation extends Simulation{
 	
 	public static final int RUNNING = 0;
@@ -42,6 +37,7 @@ public class UnloadingSimulation extends Simulation{
 	private static UnloadingSimulation instance;
 	private static SimulationState state;
 	private int status;
+	private Stats stats;
 	private ConfigValues configValues;
 	private int simulationSpeed;
 	
@@ -53,6 +49,7 @@ public class UnloadingSimulation extends Simulation{
 		status = STOP;
 		configValues = new ConfigValues();
 		simulationSpeed = configValues.getSimulationSpeed();
+		stats = new Stats();
 		
 		//this.schedule( new ScheduledEvent(new ShipGeneration(), 0) );
 		this.schedule(new InitializationEvent(0));
@@ -64,6 +61,7 @@ public class UnloadingSimulation extends Simulation{
 		
 		ScheduledEvent currentEvent;
 		
+		//System.out.println("GlobalState address ============ " + state);
 		this.update();
 		
 		while(!scheduleQueue.isEmpty() && !stop) {
@@ -173,23 +171,46 @@ public class UnloadingSimulation extends Simulation{
 			}
 			
 			this.adjustSimulationTime();
+			stats.update();
 			
 		}
 		
 	}
 	
-	public SimulationState getState() {
-		return state;
+	@Override
+	public void stop() {
+		super.stop();
+		this.setStatus(STOP);
+		LivePanel.getInstance().stopTimer();
+	}
+	
+	public void resume() {
+		LivePanel.getInstance().startTimer();
+		this.stop = false;
+		this.run();
+	}
+	
+	public void update() {
+		new LivePanel(this).getInstance().startTimer();
+	}
+	
+	public void initialize() {
+		this.stop = false;
+		this.scheduleQueue.clear();
+		this.state = new SimulationState();
+		this.status = STOP;
+		this.currentTime = 0;
+		this.configValues = new ConfigValues();
+		this.startTime = Calendar.getInstance().getTime();
+		this.stats = new Stats();
+		simulationSpeed = configValues.getSimulationSpeed();
+		this.schedule(new InitializationEvent(0));
 	}
 	
 	public void adjustSimulationTime() {
 		Date currentDate = Calendar.getInstance().getTime();
 		long timeDiff = ( currentDate.getTime() - this.getStartTime().getTime() ) / 1000;
-		this.currentTime = timeDiff;
-	}
-	
-	public static UnloadingSimulation getInstance() {
-		return instance;
+		this.currentTime = timeDiff * simulationSpeed;
 	}
 	
 	public boolean checkStop() {
@@ -198,35 +219,28 @@ public class UnloadingSimulation extends Simulation{
 		return false;
 	}
 	
-	public int getStatus() {
-		return this.status;
+	public static UnloadingSimulation getInstance() {
+		return instance;
 	}
 	
-	public void setStatus(int status) {
-		this.status = status;
+	public SimulationState getState() {
+		return this.state;
+	}
+	
+	public int getStatus() {
+		return this.status;
 	}
 	
 	public ConfigValues getConfigValues() {
 		return configValues;
 	}
 	
-	public void initialize() {
-		this.stop = false;
-		this.scheduleQueue.clear();
-		this.state = new SimulationState();
-		this.status = STOP;
-		this.configValues = new ConfigValues();
-		simulationSpeed = configValues.getSimulationSpeed();
-		this.schedule(new InitializationEvent(0));
+	public Stats getStats() {
+		return stats;
 	}
 	
-	public void resume() {
-		this.stop = false;
-		this.run();
-	}
-	
-	public void update() {
-		new LivePanel2(this).getInstance().timerUpdate();
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

@@ -1,30 +1,45 @@
 package scts.ui.view;
 
-import java.awt.Dimension;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 
-public class QuayCraneView extends JLabel {
-	
-	final private int initialX = 300;
-	final private int initialY = 60;
+public class QuayCraneView {
+
+	final private int initialX = 400;
+	final private int initialY = 20;
 	private int x;
 	private int y;
-	private int moveX = 1;
-	private int moveY = 1;
-	private Dimension size;
 	private Image image;
 	
 	public QuayCraneView() {
-		super();
-		ImageIcon imageicon = new ImageIcon(this.getClass().getResource("quayCrane.png"));
-		this.setIcon(imageicon);
 		x = initialX;
 		y = initialY;
-		size = this.getPreferredSize();
-		this.setBounds(x, y, size.width, size.height);
+		try {
+			image = ImageIO.read(new File("src//scts//ui//view//quayCrane.png"));
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public Image getImage() {
+		return image;
+	}
+
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 }

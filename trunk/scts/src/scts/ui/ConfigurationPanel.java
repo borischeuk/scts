@@ -12,8 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import scts.app.*;
-import scts.domain.*;
+import scts.simulations.ConfigValues;
+import simulation.utils.Configuration;
 
 public class ConfigurationPanel{
 	

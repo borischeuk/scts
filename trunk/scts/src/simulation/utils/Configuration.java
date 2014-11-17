@@ -1,4 +1,4 @@
-package scts.app;
+package simulation.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,8 +6,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import scts.domain.ConfigValues;
+import scts.simulations.ConfigValues;
 
+/**
+ * 
+ * This class is responsible for the input and output of configuration values to and from text files.
+ *
+ */
 public class Configuration {
 	
 	private String default_file_name = "\\default.txt";
@@ -19,6 +24,7 @@ public class Configuration {
 		//readValues(currentFileName);
 	}
 	
+	//Read the configuration values from text file.
 	public void readValues(String fileName) {
 		try {
 			String filePath = new File("").getAbsolutePath();
@@ -47,6 +53,7 @@ public class Configuration {
 		
 	}
 
+	//Write new configuration values to the text file.
 	public void setData(ConfigValues data) {
 		File file = new File(outputFile);
 		try {
