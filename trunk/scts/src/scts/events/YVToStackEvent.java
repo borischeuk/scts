@@ -24,8 +24,6 @@ public class YVToStackEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================= YV Going To Stack  ================");
-		
 		EventHandler handler = new EventHandler(simulation, this);
 		
 		if(this.getStartTime() == null)
@@ -34,7 +32,6 @@ public class YVToStackEvent extends ScheduledEvent{
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			vehicle.setStatus(YardVehicle.TRAVELING);
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			vehicle.setStatus(YardVehicle.WAITING);

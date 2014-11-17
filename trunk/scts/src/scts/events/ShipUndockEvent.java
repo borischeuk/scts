@@ -24,8 +24,6 @@ public class ShipUndockEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		System.out.println("================ Undocking ================");
-		
 		if(this.getStartTime() == null)
 			this.initialize();
 		
@@ -33,7 +31,6 @@ public class ShipUndockEvent extends ScheduledEvent{
 		
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			((UnloadingSimulation)simulation).getState().getShipQueue().poll();

@@ -19,17 +19,17 @@ import scts.domain.YardVehicle;
  */
 public class SimulationState {
 
-	private Queue<Ship> shipQueue;
-	private List<Crane> QCArray;
-	private List<Crane> YCArray;
-	private List<Lane> laneArray; 
-	private Queue<YardVehicle> vehicleQuayQueue;
-	private Queue<YardVehicle> vehicleStackQueue;
-	private YardVehicle vehicleAtLane;
-	private YardVehicle vehicleAtTPt;
-	private List<YardVehicle> vehicleToStackQueue;
-	private List<YardVehicle> vehicleToQuayQueue;
-	private List<ContainerStack> stackArray;
+	private Queue<Ship> shipQueue;  //Ship waiting for docking
+	private List<Crane> QCArray;    //Quay cranes in the simulation
+	private List<Crane> YCArray;    //Yard cranes in the simulation
+	private List<Lane> laneArray;   //Lanes in the simulation
+	private Queue<YardVehicle> vehicleQuayQueue;     //Yard vehicles waiting in quay area
+	private Queue<YardVehicle> vehicleStackQueue;    //Yard vehicles waiting in seaside transfer point
+	private YardVehicle vehicleAtLane;               //Yard vehicles working at lane
+	private YardVehicle vehicleAtTPt;                //Yard vehicles working at seaside transfer point
+	private List<YardVehicle> vehicleToStackQueue;   //Yard vehicles traveling to stack
+	private List<YardVehicle> vehicleToQuayQueue;    //Yard vehicles traveling to quay
+	private List<ContainerStack> stackArray;         //Stacks in the simulation
 	
 	public SimulationState() {
 		shipQueue = new PriorityQueue<Ship>();
