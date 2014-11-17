@@ -20,6 +20,26 @@ public class Ship {
 		this.status = this.WAITING;
 	}
 
+	public void removeContainer() {
+		this.noOfContainer -= 1;
+	}
+	
+	//Get values
+	
+	public int getPriority() {
+		return this.priority;
+	}
+	
+	public int getNoOfContainer() {
+		return this.noOfContainer;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+	
+	//Set values
+	
 	public void setNoOfContainer(int noOfContainer) {
 		this.noOfContainer = noOfContainer;
 	}
@@ -34,22 +54,6 @@ public class Ship {
 	
 	public void setStatus(int status) {
 		this.status = status;
-	}
-	
-	public int getPriority() {
-		return this.priority;
-	}
-	
-	public int getNoOfContainer() {
-		return this.noOfContainer;
-	}
-	
-	public int getStatus() {
-		return status;
-	}
-	
-	public void removeContainer() {
-		this.noOfContainer -= 1;
 	}
 	
 }

@@ -3,11 +3,17 @@ package scts.events;
 import scts.domain.Crane;
 import scts.domain.Lane;
 import scts.domain.Ship;
+import scts.simulations.Stats;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class represent the quay crane loads a container from a ship.
+ *
+ */
 public class QCLoadEvent extends ScheduledEvent {
 
 	private Ship ship;
@@ -30,8 +36,6 @@ public class QCLoadEvent extends ScheduledEvent {
 		EventHandler handler = new EventHandler(simulation, this);
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
-			//crane.setStatus(Crane.LOADING);
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			crane.pick();
@@ -39,6 +43,11 @@ public class QCLoadEvent extends ScheduledEvent {
 			ship.setNoOfContainer(ship.getNoOfContainer() - 1);
 			Lane lane = ((UnloadingSimulation)simulation).getState().getlaneArray().get(0);
 			simulation.schedule(new QCWaitEvent(crane, lane, 0));
+			
+			//Update the statistics of the simulation.
+			Stats stats = ((UnloadingSimulation)simulation).getStats();
+			double unloadTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 60;
+			stats.setQuayCraneUnloadTime(stats.getQuayCraneUnloadTime() + unloadTime);
 		}
 		
 	}

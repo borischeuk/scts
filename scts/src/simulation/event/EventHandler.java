@@ -15,24 +15,26 @@ public class EventHandler {
 		this.simulation = simulation;
 	}
 	
+	//Adjust the time of event.
 	public void adjustTime() {
 		Date globalStartTime = simulation.getStartTime();
 		long globalCurrentTime = simulation.getCurrentTime();
 		Date eventStartTime = event.getStartTime();
 		long eventTimeOfOccurance = event.getTimeOfOccurance();
 		
-		//double timeDiff = ( new Long(eventStartTime.getTime() - globalStartTime.getTime()).doubleValue() ) / 1000;
 		long timeDiff = ( Calendar.getInstance().getTimeInMillis() - eventStartTime.getTime() ) / 1000;
-		/*System.out.println("Current Time ================== " + Calendar.getInstance().getTime());
-		System.out.println("Event start time ================== " + eventStartTime);
-		System.out.println("Event duration ======================== " + event.getDuration());
-		System.out.println("Time Difference ================== " + timeDiff);*/
 		eventTimeOfOccurance = timeDiff;
 		event.setTimeOfOccurance(eventTimeOfOccurance);
 		
-		//event.setStartTime(Calendar.getInstance().getTime());
+		//Used for debugging
+		System.out.println("Current Time ================== " + Calendar.getInstance().getTime());
+		System.out.println("Event start time ================== " + eventStartTime);
+		System.out.println("Event duration ======================== " + event.getDuration());
+		System.out.println("Time Difference ================== " + timeDiff);
+
 	}
 	
+	//Check whether the event finishes or not.
 	public boolean isTimeOut() {
 		if(event.getDuration() <= event.getTimeOfOccurance())
 			return true;
@@ -40,6 +42,7 @@ public class EventHandler {
 		return false;
 	}
 	
+	//Schedule the event to the simulation.
 	public void reschedule() {
 		simulation.schedule(event);
 	}

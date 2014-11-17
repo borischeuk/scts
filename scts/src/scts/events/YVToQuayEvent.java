@@ -1,11 +1,17 @@
 package scts.events;
 
 import scts.domain.YardVehicle;
+import scts.simulations.Stats;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class represents a yard vehicle travels to the quay.
+ *
+ */
 public class YVToQuayEvent extends ScheduledEvent{
 
 	YardVehicle yardVehicle;
@@ -18,7 +24,7 @@ public class YVToQuayEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		//System.out.println("======================== Going to quay =========================");
+		System.out.println("======================== YV Going to quay =========================");
 		
 		EventHandler handler = new EventHandler(simulation, this);
 		
@@ -28,11 +34,15 @@ public class YVToQuayEvent extends ScheduledEvent{
 		handler.adjustTime();
 		if(!handler.isTimeOut()) {
 			yardVehicle.setStatus(YardVehicle.TRAVELING);
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			yardVehicle.setStatus(YardVehicle.WAITING);
 			((UnloadingSimulation)simulation).getState().getVehicleQuayQueue().add(yardVehicle);
+			
+			//Update the statistics of the simulation.
+			Stats stats = ((UnloadingSimulation)simulation).getStats();
+			double travelingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + travelingTime);
 		}
 	}
 

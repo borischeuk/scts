@@ -1,16 +1,18 @@
 package scts.events;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.PriorityQueue;
-import java.util.Random;
 
 import scts.domain.Ship;
 import scts.simulations.UnloadingSimulation;
-import simulation.event.BaseEvent;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class generates ship.
+ *
+ */
 public class ShipGeneration extends ScheduledEvent{
 	
 	//For subsequent release
@@ -34,9 +36,6 @@ public class ShipGeneration extends ScheduledEvent{
 		
 		unloadingSimulation.getState().setShipQueue(shipQueue);
 		
-		//System.out.println("Total Number of Ship Generated ================= " + unloadingSimulation.getState().getShipQueue().size());
-		
-		//simulation.schedule( new DockingEvent( ( (UnloadingSimulation)simulation).getState().getShipQueue().peek(), 10) );
 	}
 
 }

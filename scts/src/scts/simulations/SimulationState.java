@@ -12,6 +12,11 @@ import scts.domain.Lane;
 import scts.domain.Ship;
 import scts.domain.YardVehicle;
 
+/**
+ * 
+ * This class stores the values used by simulation and represent the context of the simulation.
+ *
+ */
 public class SimulationState {
 
 	private Queue<Ship> shipQueue;

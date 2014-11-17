@@ -1,12 +1,15 @@
-package scts.domain;
+package scts.simulations;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import scts.app.Configuration;
-
+/**
+ * 
+ * This class stores the configuration values gotten from configuration file.
+ *
+ */
 public class ConfigValues {
 
 	private int simulationSpeed;
@@ -64,6 +67,7 @@ public class ConfigValues {
 		numShipsWaiting
 	}
 	
+	//This constructor gets the values from the configuration text file.
 	public ConfigValues() {
 		try {
 			String filePath = new File("").getAbsolutePath();

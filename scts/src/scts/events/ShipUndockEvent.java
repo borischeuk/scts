@@ -1,11 +1,17 @@
 package scts.events;
 
 import scts.domain.Ship;
+import scts.simulations.Stats;
 import scts.simulations.UnloadingSimulation;
 import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class represents ship undocks.
+ *
+ */
 public class ShipUndockEvent extends ScheduledEvent{
 
 	Ship ship;
@@ -18,7 +24,7 @@ public class ShipUndockEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		//System.out.println("================ Undocking ================");
+		System.out.println("================ Undocking ================");
 		
 		if(this.getStartTime() == null)
 			this.initialize();
@@ -31,6 +37,9 @@ public class ShipUndockEvent extends ScheduledEvent{
 			handler.reschedule();
 		} else {
 			((UnloadingSimulation)simulation).getState().getShipQueue().poll();
+			Stats stats = ((UnloadingSimulation)simulation).getStats();
+			double serviceTime = simulation.getCurrentTime() /60;
+			stats.setShipServiceTime(serviceTime);
 		}
 	}
 

@@ -8,10 +8,9 @@ import simulation.simulation.Simulation;
 
 public abstract class ScheduledEvent implements BaseEvent, Comparable<ScheduledEvent>{
 
-	private Date startTime;
-	private long duration;
-	private long timeOfOccurance;
-	//private BaseEvent event;
+	protected Date startTime;
+	protected long duration;
+	protected long timeOfOccurance;
 	
 	public ScheduledEvent(int duration) {
 		this.duration = duration;
@@ -19,15 +18,20 @@ public abstract class ScheduledEvent implements BaseEvent, Comparable<ScheduledE
 		this.startTime = null;
 	}
 	
-	/*public ScheduledEvent(BaseEvent event, int duration) {
-		this.event = event;
-		this.duration = duration;
-		this.currentTime = 0;
+	//The logic of the event
+	@Override
+	public abstract void execute(Simulation simulation);
+	
+	//Initialize the event if the event has not been started.
+	public void initialize() {
+		this.startTime = Calendar.getInstance().getTime();
 	}
 	
-	public BaseEvent getEvent() {
-		return event;
-	}*/
+	//Determine which event would be executed first when 2 events are executed simultaneously.
+	@Override
+	public int compareTo(ScheduledEvent e) {
+		return Integer.compare(this.getPriority(), e.getPriority());
+	}
 	
 	public Date getStartTime() {
 		return startTime;
@@ -51,18 +55,6 @@ public abstract class ScheduledEvent implements BaseEvent, Comparable<ScheduledE
 	
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
-	}
-	
-	@Override
-	public int compareTo(ScheduledEvent e) {
-		return Integer.compare(this.getPriority(), e.getPriority());
-	}
-
-	@Override
-	public abstract void execute(Simulation simulation);
-	
-	public void initialize() {
-		this.startTime = Calendar.getInstance().getTime();
 	}
 
 }

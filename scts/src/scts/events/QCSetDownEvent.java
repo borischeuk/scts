@@ -6,6 +6,11 @@ import simulation.event.EventHandler;
 import simulation.event.ScheduledEvent;
 import simulation.simulation.Simulation;
 
+/**
+ * 
+ * This class represents quay crane puts a container to the lane.
+ *
+ */
 public class QCSetDownEvent extends ScheduledEvent{
 
 	Crane crane;
@@ -20,7 +25,7 @@ public class QCSetDownEvent extends ScheduledEvent{
 	@Override
 	public void execute(Simulation simulation) {
 		
-		//System.out.println("============ Setting Down ===============");
+		System.out.println("============ Setting Down ===============");
 		
 		if(this.getStartTime() == null)
 			this.initialize();
@@ -30,7 +35,6 @@ public class QCSetDownEvent extends ScheduledEvent{
 		if(!handler.isTimeOut()) {
 			crane.setStatus(Crane.SETTINGDOWN);
 			lane.setStatus(Lane.LOADING);
-			//simulation.schedule(this);
 			handler.reschedule();
 		} else {
 			crane.setDown();

@@ -2,6 +2,7 @@ package scts.domain;
 
 public class SSTransferPt {
 
+	//List of status
 	public static final int FREE = 0;
 	public static final int OCCUPIED = 1;
 	public static final int LOADING = 2;
@@ -13,12 +14,12 @@ public class SSTransferPt {
 		status = FREE;
 	}
 	
-	public int getStatus() {
-		return status;
+	public void accommodate() {
+		status = OCCUPIED;
 	}
 	
-	public void setStatus(int status) {
-		this.status = status;
+	public void removeContainer() {
+		status = FREE;
 	}
 	
 	public boolean hasContainer() {
@@ -28,12 +29,12 @@ public class SSTransferPt {
 			return false;
 	}
 	
-	public void accommodate() {
-		status = OCCUPIED;
+	public int getStatus() {
+		return status;
 	}
 	
-	public void removeContainer() {
-		status = FREE;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

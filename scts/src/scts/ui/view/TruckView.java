@@ -1,35 +1,45 @@
 package scts.ui.view;
 
-import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 
-public class TruckView extends JLabel {
-	
+public class TruckView {
+
 	final private int initialX = 10;
 	final private int initialY = 550;
 	private int x;
 	private int y;
-	private int moveX = 1;
-	private int moveY = 1;
-	private Dimension size;
+	private Image image;
 	
 	public TruckView() {
-		super();
-		ImageIcon imageicon = new ImageIcon(this.getClass().getResource("truck.png"));
-		this.setIcon(imageicon);
 		x = initialX;
 		y = initialY;
-		size = this.getPreferredSize();
-		this.setBounds(x, y, size.width, size.height);
+		try {
+			image = ImageIO.read(new File("src//scts//ui//view//truck.png"));
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 	
-	
-	public void move() {
-		x = this.getX();
-		y = this.getY();
-		this.setBounds(x+moveX, y+moveY, size.width, size.height);
-		this.repaint();
+	public int getX() {
+		return x;
 	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public Image getImage() {
+		return image;
+	}
+
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 }
