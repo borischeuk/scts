@@ -12,7 +12,7 @@ public class StopEvent extends ScheduledEvent{
 
 	Simulation simulation;
 	
-	public StopEvent(Simulation simulation, int duration) {
+	public StopEvent(Simulation simulation, long duration) {
 		super(duration);
 		this.simulation = simulation;
 	}

@@ -121,8 +121,8 @@ public class LivePanel extends JPanel{
 	
 	private String calSimTime() {
 		long currentTime = simulation.getCurrentTime();
-		long mins = currentTime / 60;
-		long sec = currentTime % 60;
+		long mins = currentTime / 1000/ 60;
+		long sec = (currentTime /1000) % 60;
 		return "" + mins + ":" + sec;
 	}
 	

@@ -16,7 +16,7 @@ public class ShipDockEvent extends ScheduledEvent{
 
 	Ship theShip;
 	
-	public ShipDockEvent(Ship theShip, int duration) {
+	public ShipDockEvent(Ship theShip, long duration) {
 		super(duration);
 		this.theShip = theShip;
 	}

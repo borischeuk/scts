@@ -16,7 +16,7 @@ public class YVToStackEvent extends ScheduledEvent{
 	
 	YardVehicle vehicle;
 	
-	public YVToStackEvent(YardVehicle vehicle, int duration) {
+	public YVToStackEvent(YardVehicle vehicle, long duration) {
 		super(duration);
 		this.vehicle = vehicle;
 	}
@@ -42,7 +42,7 @@ public class YVToStackEvent extends ScheduledEvent{
 			
 			//Update the statistics of the simulation.
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double travelingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			double travelingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 1000 / 60;
 			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + travelingTime);
 		}
 	}

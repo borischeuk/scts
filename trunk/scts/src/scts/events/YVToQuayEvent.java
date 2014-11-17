@@ -16,7 +16,7 @@ public class YVToQuayEvent extends ScheduledEvent{
 
 	YardVehicle yardVehicle;
 	
-	public YVToQuayEvent(YardVehicle yardVehicle, int duration) {
+	public YVToQuayEvent(YardVehicle yardVehicle, long duration) {
 		super(duration);
 		this.yardVehicle = yardVehicle;
 	}
@@ -41,7 +41,7 @@ public class YVToQuayEvent extends ScheduledEvent{
 			
 			//Update the statistics of the simulation.
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double travelingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			double travelingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 1000 / 60;
 			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + travelingTime);
 		}
 	}

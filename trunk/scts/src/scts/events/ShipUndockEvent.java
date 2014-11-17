@@ -16,7 +16,7 @@ public class ShipUndockEvent extends ScheduledEvent{
 
 	Ship ship;
 	
-	public ShipUndockEvent(Ship ship, int duration) {
+	public ShipUndockEvent(Ship ship, long duration) {
 		super(duration);
 		this.ship = ship;
 	}
@@ -38,7 +38,7 @@ public class ShipUndockEvent extends ScheduledEvent{
 		} else {
 			((UnloadingSimulation)simulation).getState().getShipQueue().poll();
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double serviceTime = simulation.getCurrentTime() /60;
+			double serviceTime = simulation.getCurrentTime() /60 / 1000;
 			stats.setShipServiceTime(serviceTime);
 		}
 	}

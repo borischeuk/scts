@@ -20,7 +20,7 @@ public class YVUnloadEvent extends ScheduledEvent{
 	YardVehicle vehicle;
 	SSTransferPt transferPt;
 	
-	public YVUnloadEvent(YardVehicle vehicle, SSTransferPt transferPt, int duration) {
+	public YVUnloadEvent(YardVehicle vehicle, SSTransferPt transferPt, long duration) {
 		super(duration);
 		this.vehicle = vehicle;
 		this.transferPt = transferPt;
@@ -50,12 +50,13 @@ public class YVUnloadEvent extends ScheduledEvent{
 			int minTime = configValues.getyvTravelToQAMinTime();
 			int maxTime = configValues.getyvTravelToQAMaxTime();
 			int simulationSpeed = configValues.getSimulationSpeed();
-			int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+			//int duration = RandomFactory.randSimulationTime(minTime, maxTime, simulationSpeed);
+			long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, simulationSpeed);
 			simulation.schedule(new YVToQuayEvent(vehicle, duration));
 			
 			//Update the statistics of the simulation.
 			Stats stats = ((UnloadingSimulation)simulation).getStats();
-			double unloadingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed();
+			double unloadingTime = this.getDuration() * ((UnloadingSimulation)simulation).getConfigValues().getSimulationSpeed() / 1000 / 60;
 			stats.setYardVehicleTimeSpentInSeaside(stats.getYardVehicleTimeSpentInSeaside() + unloadingTime);
 			stats.setYardVehicleTotalTimeSpent(stats.getYardVehicleTotalTimeSpent() + unloadingTime);
 		}

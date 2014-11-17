@@ -18,4 +18,12 @@ public class TimeCal {
 		return new Date(date.getTime() + (second * 1000));
 	}
 	
+	public static long minusMilliSecond(Date date1, Date date2) {
+		return (date1.getTime() - date2.getTime());
+	}
+	
+	public static Date plusMilliSecToDate(Date date, int milliSec) {
+		return new Date(date.getTime() + milliSec);
+	}
+	
 }

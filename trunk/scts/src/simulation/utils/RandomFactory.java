@@ -19,6 +19,13 @@ public class RandomFactory {
 		return (random.nextInt((maxInSec - minInSec + 1)) + minInSec) / speed;
 	}
 	
+	public static long randSimTimeInMilliSec(int min, int max, int speed) {
+		long minInMilliSec = min * 60 * 1000;
+		long maxInMilliSec = max * 60 * 1000;
+		return (long)(((random.nextDouble() * (maxInMilliSec - minInMilliSec + 1)) + minInMilliSec) / speed);
+		//return (long)random.nextDouble();
+	}
+	
 	public static int randInt(int min, int max) {
 		return (random.nextInt((max - min + 1)) + min);
 	}

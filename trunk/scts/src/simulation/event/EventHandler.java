@@ -17,12 +17,10 @@ public class EventHandler {
 	
 	//Adjust the time of event.
 	public void adjustTime() {
-		Date globalStartTime = simulation.getStartTime();
-		long globalCurrentTime = simulation.getCurrentTime();
 		Date eventStartTime = event.getStartTime();
 		long eventTimeOfOccurance = event.getTimeOfOccurance();
 		
-		long timeDiff = ( Calendar.getInstance().getTimeInMillis() - eventStartTime.getTime() ) / 1000;
+		long timeDiff = Calendar.getInstance().getTimeInMillis() - eventStartTime.getTime();
 		eventTimeOfOccurance = timeDiff;
 		event.setTimeOfOccurance(eventTimeOfOccurance);
 		

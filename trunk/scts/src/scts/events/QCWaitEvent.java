@@ -19,7 +19,7 @@ public class QCWaitEvent extends ScheduledEvent{
 	Crane crane;
 	Lane lane;
 	
-	public QCWaitEvent(Crane crane, Lane lane, int duration) {
+	public QCWaitEvent(Crane crane, Lane lane, long duration) {
 		super(duration);
 		this.crane = crane;
 		this.lane = lane;
@@ -38,7 +38,8 @@ public class QCWaitEvent extends ScheduledEvent{
 			ConfigValues configValues = ((UnloadingSimulation)simulation).getConfigValues();
 			int minTime = configValues.getqcPlaceMinTime();
 			int maxTime = configValues.getqcPlaceMaxTime();
-			int duration = RandomFactory.randSimulationTime(minTime, maxTime, configValues.getSimulationSpeed());
+			//int duration = RandomFactory.randSimulationTime(minTime, maxTime, configValues.getSimulationSpeed());
+			long duration = RandomFactory.randSimTimeInMilliSec(minTime, maxTime, configValues.getSimulationSpeed());
 			simulation.schedule(new QCSetDownEvent(crane, lane, duration));
 		}
 	}

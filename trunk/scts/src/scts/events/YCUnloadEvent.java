@@ -15,7 +15,7 @@ public class YCUnloadEvent extends ScheduledEvent{
 
 	ContainerStack containerStack;
 	
-	public YCUnloadEvent(ContainerStack containerStack, int duration) {
+	public YCUnloadEvent(ContainerStack containerStack, long duration) {
 		super(duration);
 		this.containerStack = containerStack;
 	}
